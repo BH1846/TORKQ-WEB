@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+<defs>
+  <linearGradient id="ws-frame" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#ffffff"/>
+    <stop offset=".18" stop-color="#d8dcdc"/>
+    <stop offset=".48" stop-color="#aeb3b3"/>
+    <stop offset=".75" stop-color="#f7f8f8"/>
+    <stop offset="1" stop-color="#b9bdbd"/>
+  </linearGradient>
+  <linearGradient id="ws-bezel" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#161a1a"/>
+    <stop offset=".22" stop-color="#4f5454"/>
+    <stop offset=".42" stop-color="#bfc4c4"/>
+    <stop offset=".52" stop-color="#777c7c"/>
+    <stop offset=".7" stop-color="#3b4040"/>
+    <stop offset="1" stop-color="#111414"/>
+  </linearGradient>
+  <linearGradient id="ws-stand" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#171b1b"/>
+    <stop offset=".28" stop-color="#686d6d"/>
+    <stop offset=".5" stop-color="#e2e5e5"/>
+    <stop offset=".62" stop-color="#8d9292"/>
+    <stop offset="1" stop-color="#171a1a"/>
+  </linearGradient>
+  <radialGradient id="ws-green" cx="35%" cy="30%">
+    <stop offset="0" stop-color="#c6ff55"/>
+    <stop offset=".45" stop-color="#72e817"/>
+    <stop offset="1" stop-color="#35a900"/>
+  </radialGradient>
+  <filter id="ws-outerGlow" x="-30%" y="-30%" width="160%" height="160%">
+    <feGaussianBlur stdDeviation="2.2" result="b"/>
+    <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+  </filter>
+  <filter id="ws-greenGlow" x="-200%" y="-200%" width="400%" height="400%">
+    <feGaussianBlur stdDeviation="2.5" result="b"/>
+    <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+  </filter>
+</defs>
+
+<rect x="47" y="76" width="418" height="285" rx="17"
+      fill="#030606" stroke="url(#ws-frame)" stroke-width="3.2" filter="url(#ws-outerGlow)"/>
+<path d="M50.5 93 Q50.5 79.5 64 79.5 H448 Q461.5 79.5 461.5 93 V318.5 H50.5Z" fill="#050909"/>
+<path d="M50.5 319 H461.5 V344 Q461.5 357.5 448 357.5 H64 Q50.5 357.5 50.5 344Z" fill="url(#ws-bezel)"/>
+<line x1="51" y1="319.5" x2="461" y2="319.5" stroke="#dfe2e2" stroke-width="1.8"/>
+<path d="M59 345 Q59 353 69 353 H438 Q453 353 453 343" fill="none" stroke="#f4f6f6" stroke-width="1.2" opacity=".7"/>
+<circle cx="444" cy="342" r="4.2" fill="url(#ws-green)" filter="url(#ws-greenGlow)"/>
+<circle cx="442.8" cy="340.8" r="1" fill="#d6ff8b" opacity=".8"/>
+<path d="M243 358 L235 416 H277 L269 358 Z" fill="url(#ws-stand)"/>
+<path d="M251 360 L246 413" stroke="#f5f7f7" stroke-width="1.2" opacity=".7"/>
+<path d="M265 360 L272 413" stroke="#111515" stroke-width="1.2" opacity=".8"/>
+<path d="M218 416.5 H294" stroke="url(#ws-stand)" stroke-width="5" stroke-linecap="round" filter="url(#ws-outerGlow)"/>
+<path d="M222 415.5 H290" stroke="#f5f7f7" stroke-width="1.2" stroke-linecap="round" opacity=".8"/>
+<path d="M64 77.8 H448" stroke="#ffffff" stroke-width="1" opacity=".65"/>
+<path d="M48.8 93 V342" stroke="#ffffff" stroke-width="1" opacity=".45"/>
+</svg>

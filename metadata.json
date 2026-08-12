@@ -1,0 +1,6 @@
+{
+  "name": "TorkQ",
+  "description": "TorkQ AI security analysis application with exposure scanner, interactive flow diagrams, risk Sentinel engine, key features, and contact forms.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
