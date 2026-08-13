@@ -22,7 +22,12 @@ export const TorkQLogo: React.FC<TorkQLogoProps> = ({
       {/* TorkQ Logo Icon */}
       <img
         src="/logo.svg"
-        alt="TorkQ"
+        alt="TorkQ logo"
+        // Intrinsic size is declared so the square is reserved before the SVG
+        // loads — without it the wordmark shifts sideways on first paint.
+        width={size}
+        height={size}
+        decoding="async"
         className="h-8 w-8 shrink-0 object-contain"
         style={size !== 32 ? { width: `${size}px`, height: `${size}px` } : undefined}
       />

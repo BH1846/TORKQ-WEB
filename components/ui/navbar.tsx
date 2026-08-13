@@ -15,17 +15,28 @@ import { BirdMark } from './bird-mark';
 
 interface NavItem {
   id: string;
-  href: string;
   label: string;
   icon: LucideIcon;
 }
 
 const NAV_ITEMS: NavItem[] = [
-  { id: 'demo', href: '#demo', label: 'DEMO', icon: Play },
-  { id: 'details', href: '#details', label: 'DETAILS', icon: FileText },
-  { id: 'comparison', href: '#comparison', label: 'COMPARISON', icon: Columns3 },
-  { id: 'contact', href: '#contact', label: 'CONTACT', icon: Mail },
+  { id: 'demo', label: 'DEMO', icon: Play },
+  { id: 'details', label: 'DETAILS', icon: FileText },
+  { id: 'comparison', label: 'COMPARISON', icon: Columns3 },
+  { id: 'contact', label: 'CONTACT', icon: Mail },
 ];
+
+export interface NavbarProps {
+  /**
+   * Prefix for the section links. Empty on the homepage, where the sections
+   * are on the page and '#demo' is right; '/' on the blog and FAQ, where the
+   * sections live elsewhere and the link has to be '/#demo' to get there.
+   *
+   * The click handler below falls through to the browser whenever the target
+   * section is absent, so the same component drives both cases.
+   */
+  linkBase?: string;
+}
 
 /**
  * Sections that are tracked but own no link of their own — they light the link
@@ -50,7 +61,7 @@ const SCROLL_THRESHOLD = 80;
  */
 const SCROLL_LOCK_MS = 800;
 
-export const Navbar: React.FC = () => {
+export const Navbar: React.FC<NavbarProps> = ({ linkBase = '' }) => {
   const [activeId, setActiveId] = useState<string>('');
   const [isScrolled, setIsScrolled] = useState(false);
   const prefersReducedMotion = useReducedMotion();
@@ -108,9 +119,13 @@ export const Navbar: React.FC = () => {
   }, [releaseLock]);
 
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
-    e.preventDefault();
+    // Check for the section before suppressing the default. On the homepage the
+    // target is always present and this behaves exactly as before; on the blog
+    // and FAQ it is absent, and letting the click through is what navigates the
+    // visitor back to '/#demo' instead of doing nothing.
     const target = document.getElementById(id);
     if (!target) return;
+    e.preventDefault();
 
     // Respond on the click, not when the scroll lands — the lamp leaves for the
     // new link immediately and the page catches up to it.
@@ -130,8 +145,8 @@ export const Navbar: React.FC = () => {
       <header className="fixed top-0 left-0 right-0 z-50 bg-transparent py-6 pointer-events-none">
         <div className="max-w-7xl mx-auto px-6 sm:px-8 flex items-center justify-between">
           <motion.a
-            href="#"
-            aria-label="TorkQ — back to top"
+            href={linkBase || '#'}
+            aria-label={linkBase ? 'TorkQ — home' : 'TorkQ — back to top'}
             className="group pointer-events-auto flex items-center gap-3 rounded-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-[#6DBE30]"
             initial={{ opacity: 0, x: -15 }}
             animate={{ opacity: 1, x: 0 }}
@@ -147,7 +162,7 @@ export const Navbar: React.FC = () => {
           </motion.a>
 
           <motion.a
-            href="#get-torkq"
+            href={`${linkBase}#get-torkq`}
             onClick={(e) => handleNavClick(e, 'get-torkq')}
             className="pointer-events-auto bg-[#6DBE30] hover:bg-[#8BE14A] text-black font-bold text-sm px-6 py-2.5 rounded-full shadow-lg shadow-[#6DBE30]/20 transition-colors duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
             initial={{ opacity: 0, x: 15 }}
@@ -177,7 +192,7 @@ export const Navbar: React.FC = () => {
             return (
               <a
                 key={item.id}
-                href={item.href}
+                href={`${linkBase}#${item.id}`}
                 onClick={(e) => handleNavClick(e, item.id)}
                 aria-label={item.label}
                 aria-current={isActive ? 'true' : undefined}

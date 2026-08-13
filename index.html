@@ -3,11 +3,63 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>My Google AI Studio App</title>
+
+    <!--
+      These tags are the no-JavaScript baseline. Social scrapers (Slack,
+      LinkedIn, WhatsApp, X) do not execute JavaScript, so the OG card has to
+      exist in the served HTML — a runtime-only head would preview as blank.
+
+      Each one carries data-seo-static="true". On React 19, react-helmet-async
+      emits its tags through React's native metadata hoisting, which appends
+      rather than reconciling, so <Seo> deletes everything marked
+      data-seo-static as it takes over. Without that the page would carry two
+      <title>s and two canonicals. Any tag added here that <Seo> also emits
+      needs the attribute.
+    -->
+    <title data-seo-static="true">TorkQ — Keep Company Data Out of AI Models | AI Governance Gateway</title>
+    <meta
+      data-seo-static="true"
+      name="description"
+      content="TorkQ is an on-premise AI governance gateway. Detect and mask PII before prompts reach an LLM, control model access per user, and keep a tamper-evident audit trail. Built for DPDP Act compliance."
+    />
+
+    <link data-seo-static="true" rel="canonical" href="https://{{DOMAIN}}/" />
+    <meta data-seo-static="true" name="robots" content="index, follow" />
+
+    <!-- Open Graph -->
+    <meta data-seo-static="true" property="og:type" content="website" />
+    <meta data-seo-static="true" property="og:site_name" content="TorkQ" />
+    <meta
+      data-seo-static="true"
+      property="og:title"
+      content="TorkQ — Keep Company Data Out of AI Models | AI Governance Gateway"
+    />
+    <meta
+      data-seo-static="true"
+      property="og:description"
+      content="TorkQ is an on-premise AI governance gateway. Detect and mask PII before prompts reach an LLM, control model access per user, and keep a tamper-evident audit trail. Built for DPDP Act compliance."
+    />
+    <meta data-seo-static="true" property="og:url" content="https://{{DOMAIN}}/" />
+    <meta data-seo-static="true" property="og:image" content="https://{{DOMAIN}}/og-image.png" />
+
+    <!-- Twitter -->
+    <meta data-seo-static="true" name="twitter:card" content="summary_large_image" />
+    <meta
+      data-seo-static="true"
+      name="twitter:title"
+      content="TorkQ — Keep Company Data Out of AI Models | AI Governance Gateway"
+    />
+    <meta
+      data-seo-static="true"
+      name="twitter:description"
+      content="TorkQ is an on-premise AI governance gateway. Detect and mask PII before prompts reach an LLM, control model access per user, and keep a tamper-evident audit trail. Built for DPDP Act compliance."
+    />
+    <meta data-seo-static="true" name="twitter:image" content="https://{{DOMAIN}}/og-image.png" />
+
+    <link rel="icon" href="/logo.png" />
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
-

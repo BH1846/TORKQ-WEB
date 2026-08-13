@@ -4,19 +4,28 @@
  */
 
 import React, { useRef } from 'react';
-import { MotionConfig } from 'framer-motion';
-import { ThemeStateProvider, useThemeState } from './lib/theme-state';
-import { ParticleField } from './components/ui/particle-field';
-import { FlowDiagram, FlowDiagramHandle } from './components/ui/flow-diagram';
-import { Navbar } from './components/ui/navbar';
-import { ExposureInput } from './components/ui/exposure-input';
-import { HeroSection } from './components/sections/hero';
-import { DetailsSection } from './components/sections/details';
-import { KeyFeaturesSection } from './components/sections/key-features';
-import { ComparisonSection } from './components/sections/comparison';
-import { GetDemoSection } from './components/sections/get-demo';
-import { ContactSection } from './components/sections/contact';
-import { FooterSection } from './components/sections/footer';
+import { Seo } from '../components/seo';
+import { useThemeState } from '../lib/theme-state';
+import { ParticleField } from '../components/ui/particle-field';
+import { FlowDiagram, FlowDiagramHandle } from '../components/ui/flow-diagram';
+import { Navbar } from '../components/ui/navbar';
+import { ExposureInput } from '../components/ui/exposure-input';
+import { HeroSection } from '../components/sections/hero';
+import { DetailsSection } from '../components/sections/details';
+import { KeyFeaturesSection } from '../components/sections/key-features';
+import { ComparisonSection } from '../components/sections/comparison';
+import { GetDemoSection } from '../components/sections/get-demo';
+import { ContactSection } from '../components/sections/contact';
+import { FooterSection } from '../components/sections/footer';
+
+/**
+ * The homepage, unchanged — it is simply the '/' route now.
+ *
+ * The providers that used to wrap this (MotionConfig, HelmetProvider,
+ * ThemeStateProvider) moved up to the root layout in src/routes.tsx so the
+ * blog and FAQ share them. Nothing else about this page moved: same sections,
+ * same order, same flow diagram and scan choreography.
+ */
 
 /**
  * The page's content guides, in one place so the sections that share them
@@ -48,7 +57,7 @@ const Dimmable: React.FC<{ dimmed: boolean; children: React.ReactNode }> = ({
   </div>
 );
 
-function MainApp() {
+export default function HomePage() {
   const { state } = useThemeState();
   const flowDiagramRef = useRef<FlowDiagramHandle | null>(null);
 
@@ -59,6 +68,10 @@ function MainApp() {
 
   return (
     <div className="relative min-h-screen bg-black text-white font-sans overflow-x-hidden selection:bg-[#6DBE30]/30 selection:text-[#6DBE30]">
+      {/* Homepage head tags + site-level JSON-LD. Mirrors index.html so the
+          served HTML is correct with or without JavaScript. */}
+      <Seo canonical="/" includeStructuredData />
+
       {/* Full-viewport Particle Field Background (z-index 0) */}
       <ParticleField />
 
@@ -128,17 +141,5 @@ function MainApp() {
         <FooterSection />
       </Dimmable>
     </div>
-  );
-}
-
-export default function App() {
-  return (
-    // reducedMotion="user" makes every framer-motion transform animation on the
-    // page respect the OS setting. Without it, Framer Motion ignores it entirely.
-    <MotionConfig reducedMotion="user">
-      <ThemeStateProvider>
-        <MainApp />
-      </ThemeStateProvider>
-    </MotionConfig>
   );
 }

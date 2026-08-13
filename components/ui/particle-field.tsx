@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useThemeState } from '../../lib/theme-state';
 
 interface Particle {
@@ -22,7 +22,30 @@ export const ParticleField: React.FC = () => {
     active: false,
   });
 
+  /**
+   * The field is decorative, so it must not compete with the hero for the
+   * first paint. Seeding up to 120 particles and running the first O(n²)
+   * connection pass is a few milliseconds of main-thread work in the same
+   * commit that paints the headline; deferring it past two frames lets the
+   * hero land first and costs nothing visually — the canvas element itself is
+   * always mounted, so no layout shifts in when the field switches on.
+   */
+  const [afterFirstPaint, setAfterFirstPaint] = useState(false);
+
   useEffect(() => {
+    let raf2 = 0;
+    const raf1 = requestAnimationFrame(() => {
+      raf2 = requestAnimationFrame(() => setAfterFirstPaint(true));
+    });
+    return () => {
+      cancelAnimationFrame(raf1);
+      cancelAnimationFrame(raf2);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!afterFirstPaint) return;
+
     const canvas = canvasRef.current;
     if (!canvas) return;
 
@@ -178,7 +201,7 @@ export const ParticleField: React.FC = () => {
         cancelAnimationFrame(animFrameRef.current);
       }
     };
-  }, [exposureScore, accentRgb, reducedMotion]);
+  }, [exposureScore, accentRgb, reducedMotion, afterFirstPaint]);
 
   return (
     <canvas
