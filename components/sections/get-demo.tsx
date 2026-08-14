@@ -28,7 +28,7 @@ export const GetDemoSection: React.FC = () => {
         <Reveal className="w-full flex flex-col items-center">
           <div data-material="panel" className="w-full max-w-3xl mx-auto rounded-3xl p-8 sm:p-14 bg-white/[0.03] backdrop-blur-xl border border-white/10 shadow-2xl flex flex-col items-center space-y-6 text-center">
             <div>
-              <span className="inline-block text-xs font-mono font-bold tracking-widest uppercase px-3.5 py-1.5 rounded-full bg-[#6DBE30]/10 border border-[#6DBE30]/20 text-[#6DBE30]">
+              <span className="inline-block text-xs font-mono font-bold tracking-widest uppercase text-[#6DBE30]">
                 SEE IT ON YOUR OWN DATA
               </span>
             </div>

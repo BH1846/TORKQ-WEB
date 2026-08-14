@@ -72,7 +72,7 @@ export const KeyFeaturesSection: React.FC = () => (
 
     <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-8 space-y-12 sm:space-y-16">
       <Reveal className="text-center space-y-4">
-        <span className="inline-block text-xs font-mono font-bold tracking-widest uppercase px-3 py-1 rounded-full bg-[#6DBE30]/10 border border-[#6DBE30]/20 text-[#6DBE30]">
+        <span className="inline-block text-xs font-mono font-bold tracking-widest uppercase text-[#6DBE30]">
           Key Features
         </span>
         <h2 className="text-3xl sm:text-4xl font-sans font-bold text-white tracking-heading leading-heading">

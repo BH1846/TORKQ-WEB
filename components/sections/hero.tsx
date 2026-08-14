@@ -60,7 +60,7 @@ export const HeroSection: React.FC = () => {
       >
         {/* 1. Pill Badge */}
         <motion.div variants={itemVariants}>
-          <span className="inline-block px-3.5 py-1.5 rounded-full text-[11px] font-mono font-bold tracking-widest uppercase bg-white/5 border border-white/10 text-[#6DBE30] shadow-sm shadow-[#6DBE30]/10">
+          <span className="inline-block text-[11px] font-mono font-bold tracking-widest uppercase text-[#6DBE30]">
             AI GOVERNANCE GATEWAY
           </span>
         </motion.div>
