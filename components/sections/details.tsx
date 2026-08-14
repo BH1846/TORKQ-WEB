@@ -55,7 +55,7 @@ export const DetailsSection: React.FC = () => {
           {/* ── LEFT: the claim ─────────────────────────────────────────── */}
           <div className="lg:col-span-5 lg:sticky lg:top-28 space-y-6">
             <Reveal>
-              <span className="inline-block text-xs font-mono font-bold tracking-widest uppercase px-3 py-1 rounded-full bg-[#6DBE30]/10 border border-[#6DBE30]/20 text-[#6DBE30]">
+              <span className="inline-block text-xs font-mono font-bold tracking-widest uppercase text-[#6DBE30]">
                 Core Capabilities
               </span>
             </Reveal>

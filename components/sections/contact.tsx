@@ -16,7 +16,7 @@ export const ContactSection: React.FC = () => {
     <section id="contact" className="w-full max-w-[1100px] mx-auto px-4 py-20 scroll-mt-24 space-y-10">
       <Reveal className="text-center space-y-3">
         <span
-          className="text-xs font-mono font-bold tracking-widest uppercase px-3 py-1 rounded-full border border-white/10 bg-white/5"
+          className="text-xs font-mono font-bold tracking-widest uppercase"
           style={{ color: accent }}
         >
           GET IN TOUCH

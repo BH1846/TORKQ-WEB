@@ -15,6 +15,7 @@ import { TorkQLogo } from '../ui/torkq-logo';
 const CONTENT_LINKS: { to: string; label: string }[] = [
   { to: '/blog', label: 'Blog' },
   { to: '/faq', label: 'FAQ' },
+  { to: '/dpdp-exposure', label: 'DPDP Risk Map' },
 ];
 
 export const FooterSection: React.FC = () => {
