@@ -2,14 +2,51 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useThemeState } from '../../lib/theme-state';
 import { Reveal } from '../ui/reveal';
+import { submitContact, type ContactSubmission } from '../../lib/submit-contact';
+
+const EMPTY_FORM: ContactSubmission = {
+  name: '',
+  email: '',
+  company: '',
+  message: '',
+  website: '',
+};
 
 export const ContactSection: React.FC = () => {
   const { accent } = useThemeState();
   const [submitted, setSubmitted] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [values, setValues] = useState<ContactSubmission>(EMPTY_FORM);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const setField =
+    (field: keyof ContactSubmission) =>
+    (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      const { value } = e.target;
+      setValues((current) => ({ ...current, [field]: value }));
+    };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
+    if (sending) return;
+
+    setSending(true);
+    setError(null);
+    try {
+      await submitContact(values);
+      setValues(EMPTY_FORM);
+      setSubmitted(true);
+    } catch (err) {
+      // Never fall through to the thank-you screen on failure — that would tell
+      // the visitor we have their enquiry when the row was never written.
+      setError(
+        err instanceof Error && err.message
+          ? err.message
+          : 'Something went wrong. Please try again.'
+      );
+    } finally {
+      setSending(false);
+    }
   };
 
   return (
@@ -54,7 +91,7 @@ export const ContactSection: React.FC = () => {
             </button>
           </div>
         ) : (
-          <form onSubmit={handleSubmit} className="space-y-5 font-sans">
+          <form onSubmit={handleSubmit} className="relative space-y-5 font-sans">
             <div>
               <label htmlFor="name" className="block text-xs font-mono font-semibold text-neutral-300 uppercase tracking-wider mb-2">
                 Name <span className="text-red-400">*</span>
@@ -63,6 +100,11 @@ export const ContactSection: React.FC = () => {
                 id="name"
                 type="text"
                 required
+                name="name"
+                autoComplete="name"
+                value={values.name}
+                onChange={setField('name')}
+                disabled={sending}
                 placeholder="Jane Doe"
                 className="w-full px-4 py-3 rounded-2xl bg-white/5 border border-white/10 text-white placeholder-neutral-500 focus:outline-none focus:border-[#6DBE30] text-sm font-sans transition-colors"
               />
@@ -76,6 +118,11 @@ export const ContactSection: React.FC = () => {
                 id="email"
                 type="email"
                 required
+                name="email"
+                autoComplete="email"
+                value={values.email}
+                onChange={setField('email')}
+                disabled={sending}
                 placeholder="jane@company.com"
                 className="w-full px-4 py-3 rounded-2xl bg-white/5 border border-white/10 text-white placeholder-neutral-500 focus:outline-none focus:border-[#6DBE30] text-sm font-sans transition-colors"
               />
@@ -88,6 +135,11 @@ export const ContactSection: React.FC = () => {
               <input
                 id="company"
                 type="text"
+                name="company"
+                autoComplete="organization"
+                value={values.company}
+                onChange={setField('company')}
+                disabled={sending}
                 placeholder="Acme Enterprise"
                 className="w-full px-4 py-3 rounded-2xl bg-white/5 border border-white/10 text-white placeholder-neutral-500 focus:outline-none focus:border-[#6DBE30] text-sm font-sans transition-colors"
               />
@@ -101,17 +153,45 @@ export const ContactSection: React.FC = () => {
                 id="message"
                 required
                 rows={4}
+                name="message"
+                value={values.message}
+                onChange={setField('message')}
+                disabled={sending}
                 placeholder="Tell us about your infrastructure or AI model traffic..."
                 className="w-full px-4 py-3 rounded-2xl bg-white/5 border border-white/10 text-white placeholder-neutral-500 focus:outline-none focus:border-[#6DBE30] text-sm font-sans resize-none transition-colors"
               />
             </div>
 
+            {/* Honeypot. Off-screen rather than display:none, which some bots
+                detect and skip. Real users never see or tab into it. */}
+            <div aria-hidden="true" className="absolute left-[-9999px] w-px h-px overflow-hidden">
+              <label htmlFor="website">Leave this field empty</label>
+              <input
+                id="website"
+                type="text"
+                tabIndex={-1}
+                autoComplete="off"
+                value={values.website}
+                onChange={setField('website')}
+              />
+            </div>
+
+            {error && (
+              <p
+                role="alert"
+                className="px-4 py-3 rounded-2xl bg-red-500/10 border border-red-500/30 text-xs text-red-300 font-sans leading-relaxed"
+              >
+                {error}
+              </p>
+            )}
+
             <button
               type="submit"
-              className="w-full py-3.5 rounded-2xl font-mono font-bold text-xs uppercase tracking-wider text-black transition-[filter,transform] duration-150 ease-out hover:brightness-110 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-[#6DBE30] shadow-lg cursor-pointer"
+              disabled={sending}
+              className="w-full py-3.5 rounded-2xl font-mono font-bold text-xs uppercase tracking-wider text-black transition-[filter,transform] duration-150 ease-out hover:brightness-110 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-[#6DBE30] shadow-lg cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed disabled:active:scale-100"
               style={{ backgroundColor: accent }}
             >
-              Submit Inquiry
+              {sending ? 'Sending…' : 'Submit Inquiry'}
             </button>
           </form>
         )}

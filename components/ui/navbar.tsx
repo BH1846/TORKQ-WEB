@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
-import { FileText, Play, Columns3, BarChart3, Mail, type LucideIcon } from 'lucide-react';
+import { FileText, Play, Columns3, Mail, type LucideIcon } from 'lucide-react';
 import { BirdMark } from './bird-mark';
 
 /**
@@ -23,7 +23,7 @@ const NAV_ITEMS: NavItem[] = [
   { id: 'demo', label: 'DEMO', icon: Play },
   { id: 'details', label: 'DETAILS', icon: FileText },
   { id: 'comparison', label: 'COMPARISON', icon: Columns3 },
-  { id: 'risk-graph', label: 'RISK MAP', icon: BarChart3 },
+  // { id: 'risk-graph', label: 'RISK MAP', icon: BarChart3 },
   { id: 'contact', label: 'CONTACT', icon: Mail },
 ];
 

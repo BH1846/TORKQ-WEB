@@ -58,14 +58,7 @@ export const HeroSection: React.FC = () => {
         animate="visible"
         className="flex flex-col items-center justify-center space-y-4 sm:space-y-5"
       >
-        {/* 1. Pill Badge */}
-        <motion.div variants={itemVariants}>
-          <span className="inline-block text-[11px] font-mono font-bold tracking-widest uppercase text-[#6DBE30]">
-            AI GOVERNANCE GATEWAY
-          </span>
-        </motion.div>
-
-        {/* 2. Main Headline */}
+        {/* Main Headline */}
         <motion.h1
           variants={itemVariants}
           className="font-sans font-bold tracking-display text-transparent bg-clip-text bg-gradient-to-b from-white via-neutral-100 to-neutral-400 leading-display text-center"
@@ -73,14 +66,6 @@ export const HeroSection: React.FC = () => {
         >
           Your team is pasting company data into someone else&apos;s model.
         </motion.h1>
-
-        {/* 3. Subtitle / Prompt instructions */}
-        <motion.p
-          variants={itemVariants}
-          className="text-sm sm:text-base text-neutral-400 max-w-xl mx-auto font-sans font-normal leading-body"
-        >
-          Paste in a prompt and see exactly what you&apos;d have sent.
-        </motion.p>
       </motion.div>
     </section>
   );

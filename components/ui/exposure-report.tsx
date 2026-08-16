@@ -193,16 +193,6 @@ export const ExposureReport: React.FC<ExposureReportProps> = ({
     return chunks;
   };
 
-  const receiptHash = React.useMemo(() => {
-    let hash = 0;
-    const str = promptText + findings.length;
-    for (let i = 0; i < str.length; i++) {
-      hash = (hash << 5) - hash + str.charCodeAt(i);
-      hash |= 0;
-    }
-    return Math.abs(hash).toString(16).padStart(12, '0');
-  }, [promptText, findings]);
-
   return (
     <div data-reveal className="w-full max-w-[900px] mx-auto space-y-8 font-sans animate-fade-in">
       {/* SECTION 1: SCORE & BAND HEADER */}
@@ -493,17 +483,6 @@ export const ExposureReport: React.FC<ExposureReportProps> = ({
             <pre className="p-3 rounded-xl bg-[#6DBE30]/10 border border-[#6DBE30]/30 text-[#8BE14A] whitespace-pre-wrap leading-relaxed text-[11px] min-h-[120px]">
               {maskedPrompt(promptText, findings)}
             </pre>
-          </div>
-        </div>
-
-        {/* EVIDENCE CHAIN RECEIPT */}
-        <div className="pt-3 border-t border-white/10 font-mono text-[10px] text-neutral-400 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
-          <div>
-            SHA-256: <span className="text-neutral-200 font-semibold">{receiptHash}</span> | Timestamp:{' '}
-            <span className="text-neutral-200">{new Date().toISOString().slice(0, 19).replace('T', ' ')} UTC</span>
-          </div>
-          <div className="text-[#6DBE30] font-bold">
-            ✓ Chained to previous entry #10428
           </div>
         </div>
       </div>
