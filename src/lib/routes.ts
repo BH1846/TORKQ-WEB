@@ -49,14 +49,6 @@ const staticRoutes: SiteRoute[] = [
     changefreq: 'monthly',
     priority: 0.8,
   },
-  {
-    // Reference page for the DPDP penalty schedule. Changes only when the Act
-    // or the Rules do, hence the low changefreq despite the high priority.
-    path: '/dpdp-exposure',
-    lastmod: '2026-08-14',
-    changefreq: 'yearly',
-    priority: 0.9,
-  },
 ];
 
 const postRoutes: SiteRoute[] = posts.map((post) => ({
