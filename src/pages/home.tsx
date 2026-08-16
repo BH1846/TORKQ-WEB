@@ -14,6 +14,7 @@ import { HeroSection } from '../components/sections/hero';
 import { DetailsSection } from '../components/sections/details';
 import { KeyFeaturesSection } from '../components/sections/key-features';
 import { ComparisonSection } from '../components/sections/comparison';
+import { RiskGraphSection } from '../components/sections/risk-graph';
 import { GetDemoSection } from '../components/sections/get-demo';
 import { ContactSection } from '../components/sections/contact';
 import { FooterSection } from '../components/sections/footer';
@@ -123,6 +124,11 @@ export default function HomePage() {
         {/* COMPARISON SECTION */}
         <Dimmable dimmed={isScanningState}>
           <ComparisonSection />
+        </Dimmable>
+
+        {/* RISK GRAPH SECTION — the comparison table's argument, priced */}
+        <Dimmable dimmed={isScanningState}>
+          <RiskGraphSection />
         </Dimmable>
 
         {/* GET LIVE DEMO SECTION */}

@@ -9,7 +9,6 @@ import HomePage from './pages/home';
 import BlogIndexPage from './pages/blog-index';
 import BlogPostPage from './pages/blog-post';
 import FaqPage from './pages/faq';
-import DpdpExposurePage from './pages/dpdp-exposure';
 
 /**
  * The route tree vite-react-ssg pre-renders.
@@ -18,7 +17,7 @@ import DpdpExposurePage from './pages/dpdp-exposure';
  * shared: ThemeStateProvider in particular is needed on the blog and FAQ
  * because the footer reads the accent from it.
  *
- * Pages are imported eagerly rather than lazily. Four routes is not enough
+ * Pages are imported eagerly rather than lazily. Three routes is not enough
  * code to justify splitting, and eager imports keep the pre-render path
  * simple — the SSG pass renders each route synchronously with no suspense
  * boundary to resolve first.
@@ -51,7 +50,6 @@ export const routes: RouteRecord[] = [
         getStaticPaths: () => posts.map(postPath),
       },
       { path: 'faq', element: <FaqPage /> },
-      { path: 'dpdp-exposure', element: <DpdpExposurePage /> },
     ],
   },
 ];

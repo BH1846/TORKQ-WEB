@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
-import { FileText, Play, Columns3, Mail, type LucideIcon } from 'lucide-react';
+import { FileText, Play, Columns3, BarChart3, Mail, type LucideIcon } from 'lucide-react';
 import { BirdMark } from './bird-mark';
 
 /**
@@ -23,6 +23,7 @@ const NAV_ITEMS: NavItem[] = [
   { id: 'demo', label: 'DEMO', icon: Play },
   { id: 'details', label: 'DETAILS', icon: FileText },
   { id: 'comparison', label: 'COMPARISON', icon: Columns3 },
+  { id: 'risk-graph', label: 'RISK MAP', icon: BarChart3 },
   { id: 'contact', label: 'CONTACT', icon: Mail },
 ];
 
@@ -196,7 +197,9 @@ export const Navbar: React.FC<NavbarProps> = ({ linkBase = '' }) => {
                 onClick={(e) => handleNavClick(e, item.id)}
                 aria-label={item.label}
                 aria-current={isActive ? 'true' : undefined}
-                className={`relative cursor-pointer text-sm font-semibold px-4 py-2 sm:px-6 rounded-full transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#6DBE30] ${
+                // px tightened from 6 to 5 at sm: five links now share the pill,
+                // and the old padding pushed it past the hero's column on md.
+                className={`relative cursor-pointer text-sm font-semibold px-4 py-2 sm:px-5 rounded-full transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#6DBE30] ${
                   isActive ? 'text-white' : 'text-zinc-400 hover:text-white'
                 }`}
               >
