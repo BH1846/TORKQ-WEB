@@ -45,11 +45,10 @@ export const FooterSection: React.FC = () => {
 
         <div>
           <a
-            href="#"
+            href="https://torkq.com"
             className="text-neutral-400 hover:text-white transition-colors underline decoration-dotted"
-            onClick={(e) => e.preventDefault()}
           >
-            &#123;&#123;DOMAIN_TBD&#125;&#125;
+            torkq.com
           </a>
         </div>
       </div>
