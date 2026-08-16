@@ -38,7 +38,19 @@
  */
 var SHEET_ID = '14RkvAlqKbgzkTTW2YjM_F1TWEKcpKqQltNEgSTIN_vY';
 var SHEET_NAME = 'Responses';
-var HEADERS = ['Timestamp', 'Name', 'Work Email', 'Company', 'Message', 'Source', 'User Agent'];
+/* "Preferred Time" is appended at the END rather than slotted next to Company
+   on purpose: inserting mid-row would leave every historic row's Message,
+   Source and User Agent one column left of the new header. */
+var HEADERS = [
+  'Timestamp',
+  'Name',
+  'Work Email',
+  'Company',
+  'Message',
+  'Source',
+  'User Agent',
+  'Preferred Time',
+];
 
 /** Run once from the editor to create the tab and trigger the auth prompt. */
 function setup() {
@@ -59,6 +71,18 @@ function getSheet_() {
     sheet.getRange(1, 1, 1, HEADERS.length).setFontWeight('bold');
     sheet.setFrozenRows(1);
     sheet.setColumnWidth(5, 420); // Message
+    return sheet;
+  }
+
+  // A sheet created before a column was added still carries the short header.
+  // Only the trailing labels are written, so existing data is untouched.
+  var width = sheet.getLastColumn();
+  if (width < HEADERS.length) {
+    var missing = HEADERS.slice(width);
+    sheet
+      .getRange(1, width + 1, 1, missing.length)
+      .setValues([missing])
+      .setFontWeight('bold');
   }
   return sheet;
 }
@@ -92,6 +116,7 @@ function doPost(e) {
         message.slice(0, 5000),
         String(body.source || 'website').slice(0, 200),
         String(body.userAgent || '').slice(0, 500),
+        preferredTime_(body),
       ]);
     } finally {
       lock.releaseLock();
@@ -104,6 +129,22 @@ function doPost(e) {
     console.error(err);
     return json_({ ok: false, error: String(err) });
   }
+}
+
+/**
+ * The requested slot as one readable cell. The browser sends wall time with no
+ * offset ("2026-08-20T14:30"), so the visitor's zone is appended — without it
+ * the cell is unschedulable for anyone reading it from another country.
+ * Left as text, not a Date: a Date would be re-interpreted in the sheet's zone,
+ * silently moving the meeting.
+ */
+function preferredTime_(body) {
+  var raw = String(body.preferredTime || '').trim();
+  if (!raw) return '';
+
+  var pretty = raw.replace('T', ' ').slice(0, 16);
+  var zone = String(body.timezone || '').trim().slice(0, 60);
+  return zone ? pretty + ' (' + zone + ')' : pretty;
 }
 
 /** Browser health check: opening the /exec URL should print {"ok":true,...}. */

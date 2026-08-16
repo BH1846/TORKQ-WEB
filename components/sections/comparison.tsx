@@ -126,7 +126,6 @@ const SIDE_STYLES: Record<Side, {
   chevron: string;
   focusRing: string;
   card: string;
-  caret: string;
   desc: string;
   marker: string;
   markerColor: string;
@@ -137,8 +136,7 @@ const SIDE_STYLES: Record<Side, {
     title: 'text-zinc-900',
     chevron: 'text-zinc-400',
     focusRing: 'focus-visible:ring-zinc-400/70',
-    card: 'bg-white border-zinc-200 shadow-2xl shadow-zinc-950/10',
-    caret: 'bg-white border-zinc-200',
+    card: 'bg-white border-zinc-200 shadow-2xl shadow-zinc-950/20',
     desc: 'text-zinc-500',
     marker: '×',
     markerColor: 'text-amber-600',
@@ -149,8 +147,7 @@ const SIDE_STYLES: Record<Side, {
     title: 'text-white',
     chevron: 'text-[#6DBE30]/70',
     focusRing: 'focus-visible:ring-[#6DBE30]/60',
-    card: 'bg-[#041A0C] border-[#6DBE30]/25 shadow-2xl shadow-black/60',
-    caret: 'bg-[#041A0C] border-[#6DBE30]/25',
+    card: 'bg-[#041A0C] border-[#6DBE30]/25 shadow-2xl shadow-black/80',
     desc: 'text-zinc-400',
     marker: '✓',
     markerColor: 'text-[#6DBE30]',
@@ -201,7 +198,9 @@ const ComparisonRowItem: React.FC<ComparisonRowItemProps> = ({
         <Icon className="h-5 w-5 stroke-[2]" aria-hidden="true" />
       </div>
 
-      <div className="min-w-0 space-y-1">
+      {/* `relative` so the popup anchors to the text column and lands directly
+          under the title, rather than below the row's full padded height. */}
+      <div className="relative min-w-0 space-y-1">
         <span
           className={`block text-[10px] font-black tracking-widest uppercase select-none ${styles.label}`}
         >
@@ -216,36 +215,35 @@ const ComparisonRowItem: React.FC<ComparisonRowItemProps> = ({
             }`}
           />
         </div>
-      </div>
 
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            id={cardId}
-            initial={{ opacity: 0, scale: 0.95, y: -4 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95, y: -4 }}
-            transition={{ duration: 0.18, ease: [0.16, 1, 0.3, 1] }}
-            style={{ transformOrigin: flipUp ? 'bottom left' : 'top left' }}
-            className={`absolute z-20 left-14 right-0 rounded-xl border p-3 ${styles.card} ${
-              flipUp ? 'bottom-full mb-2' : 'top-full -mt-2'
-            }`}
-          >
-            <span
-              aria-hidden="true"
-              className={`absolute left-6 w-2.5 h-2.5 rotate-45 border ${styles.caret} ${
-                flipUp ? '-bottom-[6px] border-t-0 border-l-0' : '-top-[6px] border-b-0 border-r-0'
+        <AnimatePresence initial={false}>
+          {isOpen && (
+            <motion.div
+              key={cardId}
+              id={cardId}
+              initial={{ opacity: 0, scale: 0.88, y: flipUp ? 8 : -8 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.88, y: flipUp ? 8 : -8 }}
+              transition={{ type: 'spring', stiffness: 460, damping: 30, mass: 0.7 }}
+              style={{ transformOrigin: flipUp ? 'bottom left' : 'top left' }}
+              /* `w-max max-w-full`: hugs the desc line so the card stays short
+                 and wide, capped at the row's content width. */
+              className={`absolute z-20 left-0 w-max max-w-full rounded-lg border px-3 py-2 ${styles.card} ${
+                flipUp ? 'bottom-full mb-3' : 'top-full mt-3'
               }`}
-            />
-            <p className={`relative flex items-start gap-1 text-xs font-medium leading-normal ${styles.desc}`}>
-              <span className={`shrink-0 font-bold ${styles.markerColor}`} aria-hidden="true">
-                {styles.marker}
-              </span>
-              <span>{content.desc}</span>
-            </p>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            >
+              <p
+                className={`flex items-start gap-1.5 text-xs font-medium leading-normal ${styles.desc}`}
+              >
+                <span className={`shrink-0 font-bold ${styles.markerColor}`} aria-hidden="true">
+                  {styles.marker}
+                </span>
+                <span>{content.desc}</span>
+              </p>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
     </div>
   );
 };
