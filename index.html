@@ -16,14 +16,14 @@
       <title>s and two canonicals. Any tag added here that <Seo> also emits
       needs the attribute.
     -->
-    <title data-seo-static="true">TorkQ — Keep Company Data Out of AI Models | AI Governance Gateway</title>
+    <title data-seo-static="true">TorkQ — AI Governance Gateway for Regulated Enterprises</title>
     <meta
       data-seo-static="true"
       name="description"
-      content="TorkQ is an on-premise AI governance gateway. Detect and mask PII before prompts reach an LLM, control model access per user, and keep a tamper-evident audit trail. Built for DPDP Act compliance."
+      content="TorkQ is an on-premise AI governance gateway that masks PII in prompts before they reach an LLM, controls model access, and logs a tamper-evident audit trail."
     />
 
-    <link data-seo-static="true" rel="canonical" href="https://{{DOMAIN}}/" />
+    <link data-seo-static="true" rel="canonical" href="https://www.torkq.com/" />
     <meta data-seo-static="true" name="robots" content="index, follow" />
 
     <!-- Open Graph -->
@@ -32,31 +32,55 @@
     <meta
       data-seo-static="true"
       property="og:title"
-      content="TorkQ — Keep Company Data Out of AI Models | AI Governance Gateway"
+      content="TorkQ — AI Governance Gateway for Regulated Enterprises"
     />
     <meta
       data-seo-static="true"
       property="og:description"
-      content="TorkQ is an on-premise AI governance gateway. Detect and mask PII before prompts reach an LLM, control model access per user, and keep a tamper-evident audit trail. Built for DPDP Act compliance."
+      content="TorkQ is an on-premise AI governance gateway that masks PII in prompts before they reach an LLM, controls model access, and logs a tamper-evident audit trail."
     />
-    <meta data-seo-static="true" property="og:url" content="https://{{DOMAIN}}/" />
-    <meta data-seo-static="true" property="og:image" content="https://{{DOMAIN}}/og-image.png" />
+    <meta data-seo-static="true" property="og:url" content="https://www.torkq.com/" />
+    <meta data-seo-static="true" property="og:image" content="https://www.torkq.com/og-image.png" />
 
     <!-- Twitter -->
     <meta data-seo-static="true" name="twitter:card" content="summary_large_image" />
     <meta
       data-seo-static="true"
       name="twitter:title"
-      content="TorkQ — Keep Company Data Out of AI Models | AI Governance Gateway"
+      content="TorkQ — AI Governance Gateway for Regulated Enterprises"
     />
     <meta
       data-seo-static="true"
       name="twitter:description"
-      content="TorkQ is an on-premise AI governance gateway. Detect and mask PII before prompts reach an LLM, control model access per user, and keep a tamper-evident audit trail. Built for DPDP Act compliance."
+      content="TorkQ is an on-premise AI governance gateway that masks PII in prompts before they reach an LLM, controls model access, and logs a tamper-evident audit trail."
     />
-    <meta data-seo-static="true" name="twitter:image" content="https://{{DOMAIN}}/og-image.png" />
+    <meta data-seo-static="true" name="twitter:image" content="https://www.torkq.com/og-image.png" />
 
-    <link rel="icon" href="/logo.png" />
+    <!--
+      Organization schema, as the no-JavaScript baseline for the same reason
+      the tags above are: a crawler that does not run the bundle still gets it.
+      <Seo includeStructuredData> emits this graph plus SoftwareApplication and
+      WebSite at runtime, so this block carries data-seo-static too and
+      vite/hoist-head.ts drops it from the pre-rendered pages — otherwise the
+      homepage would ship two Organization nodes.
+    -->
+    <script type="application/ld+json" data-seo-static="true">
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "TorkQ",
+        "url": "https://www.torkq.com",
+        "logo": "https://www.torkq.com/logo.png",
+        "description": "TorkQ builds an on-premise AI governance gateway that masks sensitive data in prompts before they reach a large language model."
+      }
+    </script>
+
+    <!-- SVG first: browsers that support it get the crisp mark at any size,
+         and favicon.ico is the fallback for those that do not. Safari ignores
+         SVG for the home-screen tile, so apple-touch-icon has to be raster. -->
+    <link rel="icon" type="image/svg+xml" href="/logo.svg" />
+    <link rel="icon" sizes="16x16 32x32 48x48" href="/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
   </head>
   <body>
     <div id="root"></div>

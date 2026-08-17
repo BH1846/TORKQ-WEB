@@ -20,7 +20,9 @@ export default defineConfig(() => {
       dirStyle: 'nested' as const,
       // React 19 emits <Seo>'s tags inside the app markup during SSR; this
       // lifts them into <head>. See vite/hoist-head.ts.
-      onPageRendered: (_route: string, html: string) => hoistHeadTags(html),
+      // Also asserts the page's SEO survived into the static HTML; a missing
+      // or doubled title/canonical/OG tag fails the build rather than shipping.
+      onPageRendered: (route: string, html: string) => hoistHeadTags(html, route),
     },
     ssr: {
       // framer-motion and lucide-react ship ESM that Node will not load from
