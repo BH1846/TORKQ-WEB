@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, useMotionValue, useTransform } from 'framer-motion';
 import { Mail } from 'lucide-react';
 import { useThemeState } from '../../lib/theme-state';
 import { Reveal } from '../ui/reveal';
@@ -25,11 +25,31 @@ const LABEL_CLASS =
   'block text-xs font-mono font-semibold text-neutral-300 uppercase tracking-wider mb-2';
 
 export const ContactSection: React.FC = () => {
-  const { accent } = useThemeState();
+  const { accent, reducedMotion } = useThemeState();
   const [submitted, setSubmitted] = useState(false);
+  const [hovered, setHovered] = useState(false);
   const [sending, setSending] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [values, setValues] = useState<ContactSubmission>(EMPTY_FORM);
+
+  // Cursor-tracked tilt. Range is deliberately tighter than a small login card
+  // would use (±8deg, not ±10) — this panel is full-width, so a wider range
+  // reads as a gimmick rather than depth.
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  const rotateX = useTransform(mouseY, [-150, 150], [8, -8]);
+  const rotateY = useTransform(mouseX, [-150, 150], [-8, 8]);
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    mouseX.set(e.clientX - rect.left - rect.width / 2);
+    mouseY.set(e.clientY - rect.top - rect.height / 2);
+  };
+
+  const handleMouseLeave = () => {
+    mouseX.set(0);
+    mouseY.set(0);
+  };
 
   const setField =
     (field: keyof ContactSubmission) =>
@@ -105,159 +125,216 @@ export const ContactSection: React.FC = () => {
 
         {/* ── Right: the form ─────────────────────────────────────────────────── */}
         <motion.div
-          data-material="panel"
-          whileHover={{ y: -4 }}
-          className="rounded-3xl p-8 bg-white/[0.03] backdrop-blur-xl border border-white/10 shadow-2xl transition-[background-color,border-color] duration-300"
+          className="group relative"
+          style={{ perspective: 1500 }}
+          onMouseEnter={() => setHovered(true)}
+          onMouseLeave={() => setHovered(false)}
         >
-          <h3 className="pb-4 mb-6 border-b border-white/15 text-xl font-sans font-bold text-white tracking-heading">
-            Book a Demo
-          </h3>
+          {/* Border glow.
+              A sibling of the card rather than a child, so it stays flat while
+              the card tilts — the card reads as sitting inside a stationary
+              aura instead of dragging it around.
 
-          {submitted ? (
-            <div data-reveal className="text-center py-8 space-y-4 font-sans animate-fade-in">
-              <div
-                className="w-12 h-12 rounded-full mx-auto flex items-center justify-center font-bold text-xl text-black"
-                style={{ backgroundColor: accent }}
-              >
-                ✓
-              </div>
-              <h4 className="text-xl font-bold text-white">Thank You</h4>
-              <p className="text-sm text-neutral-400">
-                Your request has been received. Our gateway engineering team will confirm your demo
-                slot by email within 24 hours.
-              </p>
-              <button
-                onClick={() => setSubmitted(false)}
-                className="mt-4 px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-xs font-mono text-neutral-300 hover:text-white"
-              >
-                Send Another Message
-              </button>
-            </div>
-          ) : (
-            <form onSubmit={handleSubmit} className="relative space-y-5 font-sans">
-              <div>
-                <label htmlFor="name" className={LABEL_CLASS}>
-                  Name <span className="text-red-400">*</span>
-                </label>
-                <input
-                  id="name"
-                  type="text"
-                  required
-                  name="name"
-                  autoComplete="name"
-                  value={values.name}
-                  onChange={setField('name')}
-                  disabled={sending}
-                  placeholder="Jane Doe"
-                  className={FIELD_CLASS}
-                />
-              </div>
+              The sweep animates the gradient's `from` angle, not the layer's
+              own rotation. Rotating the layer would spin its rounded-rect box
+              and mask out of alignment with the card on anything but a perfect
+              square; the angle stays locked to the card's geometry. */}
+          <motion.div
+            aria-hidden="true"
+            className="pointer-events-none absolute -inset-px -z-10 rounded-3xl opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+            style={
+              {
+                '--glow-angle': '0deg',
+                background: `conic-gradient(from var(--glow-angle), transparent 0%, ${accent}99 8%, transparent 16%)`,
+                // Punch the interior out so only the 1px outline glows. The
+                // card cannot do this by covering it — bg-white/[0.03] is
+                // nearly transparent — so the ring has to be a real mask.
+                padding: 1,
+                maskImage: 'linear-gradient(#000 0 0), linear-gradient(#000 0 0)',
+                maskClip: 'content-box, border-box',
+                maskComposite: 'exclude',
+                WebkitMaskImage: 'linear-gradient(#000 0 0), linear-gradient(#000 0 0)',
+                WebkitMaskClip: 'content-box, border-box',
+                WebkitMaskComposite: 'xor',
+              } as React.CSSProperties
+            }
+            // Gated on hover so the page does not carry an infinite animation
+            // from load, and skipped outright under prefers-reduced-motion.
+            animate={{ '--glow-angle': hovered && !reducedMotion ? '360deg' : '0deg' }}
+            transition={
+              hovered && !reducedMotion
+                ? { duration: 5, repeat: Infinity, ease: 'linear' }
+                : { duration: 0 }
+            }
+          />
 
-              <div>
-                <label htmlFor="email" className={LABEL_CLASS}>
-                  Work Email <span className="text-red-400">*</span>
-                </label>
-                <input
-                  id="email"
-                  type="email"
-                  required
-                  name="email"
-                  autoComplete="email"
-                  value={values.email}
-                  onChange={setField('email')}
-                  disabled={sending}
-                  placeholder="jane@company.com"
-                  className={FIELD_CLASS}
-                />
-              </div>
+          <motion.div
+            data-material="panel"
+            whileHover={{ y: -4 }}
+            style={{ rotateX, rotateY }}
+            onMouseMove={handleMouseMove}
+            onMouseLeave={handleMouseLeave}
+            className="rounded-3xl p-8 bg-white/[0.03] backdrop-blur-xl border border-white/10 shadow-2xl transition-[background-color,border-color] duration-300"
+          >
+            <h3 className="pb-4 mb-6 border-b border-white/15 text-xl font-sans font-bold text-white tracking-heading">
+              Book a Demo
+            </h3>
 
-              <div>
-                <label htmlFor="company" className={LABEL_CLASS}>
-                  Company
-                </label>
-                <input
-                  id="company"
-                  type="text"
-                  name="company"
-                  autoComplete="organization"
-                  value={values.company}
-                  onChange={setField('company')}
-                  disabled={sending}
-                  placeholder="Acme Enterprise"
-                  className={FIELD_CLASS}
-                />
-              </div>
-
-              <div>
-                <label htmlFor="preferredTime" className={LABEL_CLASS}>
-                  Preferred Meeting Time
-                </label>
-                {/* `color-scheme: dark` so the browser paints its own calendar
-                    widget dark — the default light picker is unreadable here. */}
-                <input
-                  id="preferredTime"
-                  type="datetime-local"
-                  name="preferredTime"
-                  value={values.preferredTime}
-                  onChange={setField('preferredTime')}
-                  disabled={sending}
-                  className={`${FIELD_CLASS} [color-scheme:dark]`}
-                />
-                <p className="mt-2 text-xs text-neutral-500 leading-body">
-                  Optional. Sent in your local time zone — we confirm the slot by email.
-                </p>
-              </div>
-
-              <div>
-                <label htmlFor="message" className={LABEL_CLASS}>
-                  Message <span className="text-red-400">*</span>
-                </label>
-                <textarea
-                  id="message"
-                  required
-                  rows={4}
-                  name="message"
-                  value={values.message}
-                  onChange={setField('message')}
-                  disabled={sending}
-                  placeholder="Tell us about your infrastructure or AI model traffic..."
-                  className={`${FIELD_CLASS} resize-none`}
-                />
-              </div>
-
-              {/* Honeypot. Off-screen rather than display:none, which some bots
-                  detect and skip. Real users never see or tab into it. */}
-              <div aria-hidden="true" className="absolute left-[-9999px] w-px h-px overflow-hidden">
-                <label htmlFor="website">Leave this field empty</label>
-                <input
-                  id="website"
-                  type="text"
-                  tabIndex={-1}
-                  autoComplete="off"
-                  value={values.website}
-                  onChange={setField('website')}
-                />
-              </div>
-
-              {error && (
-                <p
-                  role="alert"
-                  className="px-4 py-3 rounded-2xl bg-red-500/10 border border-red-500/30 text-xs text-red-300 font-sans leading-relaxed"
+            {submitted ? (
+              <div data-reveal className="text-center py-8 space-y-4 font-sans animate-fade-in">
+                <div
+                  className="w-12 h-12 rounded-full mx-auto flex items-center justify-center font-bold text-xl text-black"
+                  style={{ backgroundColor: accent }}
                 >
-                  {error}
+                  ✓
+                </div>
+                <h4 className="text-xl font-bold text-white">Thank You</h4>
+                <p className="text-sm text-neutral-400">
+                  Your request has been received. Our gateway engineering team will confirm your demo
+                  slot by email within 24 hours.
                 </p>
-              )}
+                <button
+                  onClick={() => setSubmitted(false)}
+                  className="mt-4 px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-xs font-mono text-neutral-300 hover:text-white"
+                >
+                  Send Another Message
+                </button>
+              </div>
+            ) : (
+              <form onSubmit={handleSubmit} className="relative space-y-5 font-sans">
+                <div>
+                  <label htmlFor="name" className={LABEL_CLASS}>
+                    Name <span className="text-red-400">*</span>
+                  </label>
+                  <input
+                    id="name"
+                    type="text"
+                    required
+                    name="name"
+                    autoComplete="name"
+                    value={values.name}
+                    onChange={setField('name')}
+                    disabled={sending}
+                    placeholder="Jane Doe"
+                    className={FIELD_CLASS}
+                  />
+                </div>
 
-              <button
-                type="submit"
-                disabled={sending}
-                className="w-full py-3.5 rounded-2xl font-mono font-bold text-xs uppercase tracking-wider text-black transition-[filter,transform] duration-150 ease-out hover:brightness-110 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-[#6DBE30] shadow-lg cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed disabled:active:scale-100"
-                style={{ backgroundColor: accent }}
-              >
-                {sending ? 'Sending…' : 'Send'}
-              </button>
-            </form>
-          )}
+                <div>
+                  <label htmlFor="email" className={LABEL_CLASS}>
+                    Work Email <span className="text-red-400">*</span>
+                  </label>
+                  <input
+                    id="email"
+                    type="email"
+                    required
+                    name="email"
+                    autoComplete="email"
+                    value={values.email}
+                    onChange={setField('email')}
+                    disabled={sending}
+                    placeholder="jane@company.com"
+                    className={FIELD_CLASS}
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="company" className={LABEL_CLASS}>
+                    Company
+                  </label>
+                  <input
+                    id="company"
+                    type="text"
+                    name="company"
+                    autoComplete="organization"
+                    value={values.company}
+                    onChange={setField('company')}
+                    disabled={sending}
+                    placeholder="Acme Enterprise"
+                    className={FIELD_CLASS}
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="preferredTime" className={LABEL_CLASS}>
+                    Preferred Meeting Time
+                  </label>
+                  {/* `color-scheme: dark` so the browser paints its own calendar
+                      widget dark — the default light picker is unreadable here. */}
+                  <input
+                    id="preferredTime"
+                    type="datetime-local"
+                    name="preferredTime"
+                    value={values.preferredTime}
+                    onChange={setField('preferredTime')}
+                    disabled={sending}
+                    className={`${FIELD_CLASS} [color-scheme:dark]`}
+                  />
+                  <p className="mt-2 text-xs text-neutral-500 leading-body">
+                    Optional. Sent in your local time zone — we confirm the slot by email.
+                  </p>
+                </div>
+
+                <div>
+                  <label htmlFor="message" className={LABEL_CLASS}>
+                    Message <span className="text-red-400">*</span>
+                  </label>
+                  <textarea
+                    id="message"
+                    required
+                    rows={4}
+                    name="message"
+                    value={values.message}
+                    onChange={setField('message')}
+                    disabled={sending}
+                    placeholder="Tell us about your infrastructure or AI model traffic..."
+                    className={`${FIELD_CLASS} resize-none`}
+                  />
+                </div>
+
+                {/* Honeypot. Off-screen rather than display:none, which some bots
+                    detect and skip. Real users never see or tab into it.
+
+                    The id/name deliberately avoid "website", "url" and friends:
+                    password managers fill those on sight — off-screen and
+                    autoComplete="off" do not stop them — and a filled honeypot
+                    makes the endpoint drop a genuine enquiry as spam. Naive bots
+                    fill every hidden input regardless of what it is called, so an
+                    opaque name costs nothing. The payload key stays `website`,
+                    which is what contact-endpoint.gs checks. */}
+                <div aria-hidden="true" className="absolute left-[-9999px] w-px h-px overflow-hidden">
+                  <label htmlFor="tq-hp-field">Leave this field empty</label>
+                  <input
+                    id="tq-hp-field"
+                    name="tq-hp-field"
+                    type="text"
+                    tabIndex={-1}
+                    autoComplete="off"
+                    value={values.website}
+                    onChange={setField('website')}
+                  />
+                </div>
+
+                {error && (
+                  <p
+                    role="alert"
+                    className="px-4 py-3 rounded-2xl bg-red-500/10 border border-red-500/30 text-xs text-red-300 font-sans leading-relaxed"
+                  >
+                    {error}
+                  </p>
+                )}
+
+                <button
+                  type="submit"
+                  disabled={sending}
+                  className="w-full py-3.5 rounded-2xl font-mono font-bold text-xs uppercase tracking-wider text-black transition-[filter,transform] duration-150 ease-out hover:brightness-110 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-[#6DBE30] shadow-lg cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed disabled:active:scale-100"
+                  style={{ backgroundColor: accent }}
+                >
+                  {sending ? 'Sending…' : 'Send'}
+                </button>
+              </form>
+            )}
+          </motion.div>
         </motion.div>
       </div>
     </section>

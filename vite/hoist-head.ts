@@ -58,13 +58,83 @@ function splitHead(html: string): { head: string; body: string } | null {
  * are the only title/canonical/OG set in the document.
  */
 function stripStaticBaseline(head: string): string {
-  return head.replace(
-    /\s*<(title|meta|link)\b[^>]*\bdata-seo-static\b[^>]*?>(?:[^<]*<\/\1>)?/gi,
-    '',
+  return (
+    head
+      .replace(
+        /\s*<(title|meta|link)\b[^>]*\bdata-seo-static\b[^>]*?>(?:[^<]*<\/\1>)?/gi,
+        '',
+      )
+      // The baseline JSON-LD too. It is not hoisted from the body like the
+      // tags above — <Seo> deliberately leaves its scripts there — but it
+      // still has to go, or the page carries two Organization nodes.
+      .replace(
+        /\s*<script\b[^>]*\bdata-seo-static\b[^>]*>[\s\S]*?<\/script\s*>/gi,
+        '',
+      )
   );
 }
 
-export function hoistHeadTags(html: string): string {
+/**
+ * Head tags every pre-rendered page must carry exactly once.
+ *
+ * Zero means a crawler that does not run the bundle sees nothing; two means
+ * the baseline and the hoisted copy are both live and the page contradicts
+ * itself. Both are silent failures in the served HTML — nothing at runtime
+ * would surface them — so the build asserts on them instead.
+ */
+const REQUIRED_ONCE: ReadonlyArray<readonly [string, RegExp]> = [
+  ['<title>', /<title[^>]*>/gi],
+  ['meta[name=description]', /<meta\b[^>]*\bname=["']description["']/gi],
+  ['meta[name=robots]', /<meta\b[^>]*\bname=["']robots["']/gi],
+  ['link[rel=canonical]', /<link\b[^>]*\brel=["']canonical["']/gi],
+  ['meta[og:title]', /<meta\b[^>]*\bproperty=["']og:title["']/gi],
+  ['meta[og:description]', /<meta\b[^>]*\bproperty=["']og:description["']/gi],
+  ['meta[og:url]', /<meta\b[^>]*\bproperty=["']og:url["']/gi],
+  ['meta[og:image]', /<meta\b[^>]*\bproperty=["']og:image["']/gi],
+  ['meta[og:type]', /<meta\b[^>]*\bproperty=["']og:type["']/gi],
+  ['meta[twitter:card]', /<meta\b[^>]*\bname=["']twitter:card["']/gi],
+  ['meta[twitter:title]', /<meta\b[^>]*\bname=["']twitter:title["']/gi],
+  ['meta[twitter:image]', /<meta\b[^>]*\bname=["']twitter:image["']/gi],
+];
+
+/**
+ * Fails the build if a pre-rendered page's SEO is not fully present in the
+ * static HTML.
+ *
+ * Comments are stripped before counting: index.html's explanatory comment
+ * quotes tag names like `<title>` as prose, which a naive count reads as a
+ * second tag.
+ */
+export function assertStaticSeo(route: string, html: string): void {
+  const stripped = html.replace(/<!--[\s\S]*?-->/g, '');
+  const headEnd = stripped.search(/<\/head\s*>/i);
+  if (headEnd === -1) throw new Error(`[seo] ${route}: no </head> in output`);
+  const head = stripped.slice(0, headEnd);
+
+  const problems: string[] = [];
+
+  for (const [label, pattern] of REQUIRED_ONCE) {
+    const found = [...head.matchAll(pattern)].length;
+    if (found !== 1) problems.push(`${label}: found ${found}, expected 1`);
+  }
+
+  // A surviving baseline tag means stripStaticBaseline missed it, so the
+  // homepage's canonical is now claiming to be this route.
+  if (head.includes('data-seo-static')) {
+    problems.push('a data-seo-static baseline tag survived into <head>');
+  }
+
+  const h1s = [...stripped.matchAll(/<h1[\s>]/gi)].length;
+  if (h1s !== 1) problems.push(`<h1>: found ${h1s}, expected 1`);
+
+  if (problems.length > 0) {
+    throw new Error(
+      `[seo] ${route} would ship broken metadata:\n  - ${problems.join('\n  - ')}`,
+    );
+  }
+}
+
+export function hoistHeadTags(html: string, route = '(unknown route)'): string {
   const split = splitHead(html);
   if (!split) return html;
 
@@ -78,9 +148,16 @@ export function hoistHeadTags(html: string): string {
     return '';
   });
 
-  if (hoisted.length === 0) return html;
+  // Nothing to hoist means the page did not render <Seo>. Returning early
+  // would leave index.html's homepage baseline in place, quietly giving this
+  // route the homepage's title and canonical, so this is an error, not a
+  // no-op — the assert below is what reports it.
+  const result =
+    hoisted.length === 0
+      ? html
+      : `${stripStaticBaseline(split.head)}${hoisted.join('')}${body}`;
 
-  const head = stripStaticBaseline(split.head);
+  assertStaticSeo(route, result);
 
-  return `${head}${hoisted.join('')}${body}`;
+  return result;
 }

@@ -52,6 +52,34 @@ var HEADERS = [
   'Preferred Time',
 ];
 
+/**
+ * Diagnostic. Run from the editor and read the Execution log: it names the
+ * spreadsheet this script actually writes to, which is NOT necessarily the one
+ * whose ID is in SHEET_ID. A bound script ignores SHEET_ID entirely, so a copy
+ * pasted into the wrong spreadsheet silently files every response there while
+ * the intended sheet stays empty.
+ */
+function whereAmI() {
+  var active = SpreadsheetApp.getActiveSpreadsheet();
+  var book = active || SpreadsheetApp.openById(SHEET_ID);
+
+  console.log('Bound to a spreadsheet: ' + (active ? 'yes' : 'no — using SHEET_ID'));
+  console.log('Writing to: ' + book.getName());
+  console.log('URL: ' + book.getUrl());
+
+  var tabs = book.getSheets().map(function (s) {
+    return s.getName() + ' (' + s.getLastRow() + ' rows)';
+  });
+  console.log('Tabs: ' + tabs.join(', '));
+
+  var target = book.getSheetByName(SHEET_NAME);
+  console.log(
+    target
+      ? 'Responses tab holds ' + Math.max(0, target.getLastRow() - 1) + ' response(s).'
+      : 'No "' + SHEET_NAME + '" tab here yet.'
+  );
+}
+
 /** Run once from the editor to create the tab and trigger the auth prompt. */
 function setup() {
   var sheet = getSheet_();

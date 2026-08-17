@@ -64,7 +64,7 @@ export const HeroSection: React.FC = () => {
           className="font-sans font-bold tracking-display text-transparent bg-clip-text bg-gradient-to-b from-white via-neutral-100 to-neutral-400 leading-display text-center"
           style={{ fontSize: 'clamp(2rem, 1.5rem + 2.5vw, 3.5rem)' }}
         >
-          Your team is pasting company data into someone else&apos;s model.
+          TorkQ keeps company data out of someone else&apos;s model.
         </motion.h1>
       </motion.div>
     </section>
