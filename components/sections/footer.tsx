@@ -46,15 +46,6 @@ export const FooterSection: React.FC = () => {
         <div className="text-center md:text-left">
           © {new Date().getFullYear()} Torkq Inc. All rights reserved. Zero-Trust Data Protection Gateway.
         </div>
-
-        <div>
-          <a
-            href="https://torkq.com"
-            className="text-neutral-400 hover:text-white transition-colors underline decoration-dotted"
-          >
-            torkq.com
-          </a>
-        </div>
       </div>
     </footer>
   );
