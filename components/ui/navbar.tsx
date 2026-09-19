@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion, useReducedMotion } from 'framer-motion';
 import { FileText, Play, Columns3, Mail, type LucideIcon } from 'lucide-react';
 import { BirdMark } from './bird-mark';
 
 /**
- * TorkQ navigation.
+ * Torkq navigation.
  *
  * Deliberately does NOT read the theme-state accent. The bar stays green and
  * white through every site state (scanning / exposed / remediated) so the one
@@ -20,11 +21,11 @@ interface NavItem {
 }
 
 const NAV_ITEMS: NavItem[] = [
-  { id: 'demo', label: 'DEMO', icon: Play },
-  { id: 'details', label: 'DETAILS', icon: FileText },
-  { id: 'comparison', label: 'COMPARISON', icon: Columns3 },
-  // { id: 'risk-graph', label: 'RISK MAP', icon: BarChart3 },
-  { id: 'contact', label: 'CONTACT', icon: Mail },
+  { id: 'demo', label: 'Demo', icon: Play },
+  { id: 'details', label: 'Details', icon: FileText },
+  { id: 'comparison', label: 'Comparison', icon: Columns3 },
+  // { id: 'risk-graph', label: 'Risk map', icon: BarChart3 },
+  { id: 'contact', label: 'Contact', icon: Mail },
 ];
 
 export interface NavbarProps {
@@ -66,6 +67,7 @@ export const Navbar: React.FC<NavbarProps> = ({ linkBase = '' }) => {
   const [activeId, setActiveId] = useState<string>('');
   const [isScrolled, setIsScrolled] = useState(false);
   const prefersReducedMotion = useReducedMotion();
+  const navigate = useNavigate();
   const lockUntilRef = useRef(0);
 
   const releaseLock = useCallback(() => {
@@ -138,17 +140,50 @@ export const Navbar: React.FC<NavbarProps> = ({ linkBase = '' }) => {
     target.scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth' });
   };
 
+  /**
+   * The primary CTA used to point at '#get-torkq' — a pitch panel whose own
+   * button then scrolled to the form. Two deliberate actions to reach one
+   * field. It now goes straight to where the visitor can actually type:
+   * the #contact block when this page has one, and /contact otherwise.
+   */
+  const contactHref = linkBase ? '/contact' : '#contact';
+
+  const handleContactClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    if (document.getElementById('contact')) {
+      handleNavClick(e, 'contact');
+      return;
+    }
+    // No section here, so this is a route change. Take it through the router
+    // rather than letting the browser reload the whole bundle.
+    e.preventDefault();
+    navigate('/contact');
+  };
+
   return (
     <>
       {/* ── TOP ROW: logo left, CTA right ─────────────────────────────────── */}
-      {/* pointer-events-none so this full-width transparent strip never eats
-          clicks meant for the hero underneath; the two controls opt back in. */}
-      <header className="fixed top-0 left-0 right-0 z-50 bg-transparent py-6 pointer-events-none">
-        <div className="max-w-7xl mx-auto px-6 sm:px-8 flex items-center justify-between">
+      {/* The strip is fixed, so whatever the visitor scrolls past runs underneath
+          it. Transparent, that put white body copy — and the white half of the
+          comparison table — directly behind a white wordmark, which is why the
+          logo disappeared partway down the page. Past the threshold the strip
+          takes its own material and the chrome always has something to sit on.
+
+          pointer-events stays off while the strip is transparent so it never
+          eats clicks meant for the hero, and comes back once it is an opaque
+          bar that visibly owns that space. */}
+      <header
+        data-material="chrome"
+        className={`fixed top-0 left-0 right-0 z-50 transition-[background-color,border-color,padding,backdrop-filter] duration-300 border-b ${
+          isScrolled
+            ? 'py-3 bg-black/80 backdrop-blur-lg border-white/10 pointer-events-auto'
+            : 'py-6 bg-transparent border-transparent pointer-events-none'
+        }`}
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-8 flex items-center justify-between gap-3">
           <motion.a
             href={linkBase || '#'}
-            aria-label={linkBase ? 'TorkQ — home' : 'TorkQ — back to top'}
-            className="group pointer-events-auto flex items-center gap-3 rounded-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-[#6DBE30]"
+            aria-label={linkBase ? 'Torkq — home' : 'Torkq — back to top'}
+            className="group pointer-events-auto flex items-center gap-2.5 rounded-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-[#6DBE30]"
             initial={{ opacity: 0, x: -15 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, ease: 'easeOut' }}
@@ -156,29 +191,47 @@ export const Navbar: React.FC<NavbarProps> = ({ linkBase = '' }) => {
             {/* Transitions `scale`, not `transform` — Tailwind v4's scale-105
                 writes the standalone scale property, which a transform-only
                 transition would leave to snap. */}
-            <BirdMark className="h-10 w-auto transition-[scale,filter] duration-300 group-hover:scale-105 group-hover:brightness-110" />
-            <span className="text-xl sm:text-2xl font-extrabold tracking-widest uppercase text-white select-none">
-              TORKQ
+            <BirdMark
+              className={`w-auto transition-[scale,filter,height] duration-300 group-hover:scale-105 group-hover:brightness-110 ${
+                isScrolled ? 'h-8' : 'h-9 sm:h-10'
+              }`}
+            />
+            {/* The wordmark is a name, not an acronym: set in the brand face at
+                its own capitalisation. Mono + uppercase + wide tracking read as
+                a terminal prompt and spelled the company TORKQ, which is not
+                how it is written. */}
+            <span className="font-display text-xl sm:text-2xl font-bold tracking-tight text-white select-none">
+              Torkq
             </span>
           </motion.a>
 
           <motion.a
-            href={`${linkBase}#get-torkq`}
-            onClick={(e) => handleNavClick(e, 'get-torkq')}
-            className="pointer-events-auto bg-[#6DBE30] hover:bg-[#8BE14A] text-black font-bold text-sm px-6 py-2.5 rounded-full shadow-lg shadow-[#6DBE30]/20 transition-colors duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
+            href={contactHref}
+            onClick={handleContactClick}
+            className="pointer-events-auto shrink-0 bg-[#6DBE30] hover:bg-[#8BE14A] text-black font-display font-bold text-xs sm:text-sm px-4 sm:px-6 py-2.5 rounded-full shadow-lg shadow-[#6DBE30]/20 transition-colors duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
             initial={{ opacity: 0, x: 15 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, ease: 'easeOut' }}
             whileHover={{ scale: 1.04, y: -1 }}
             whileTap={{ scale: 0.96 }}
           >
-            GET TORKQ
+            Get Torkq
           </motion.a>
         </div>
       </header>
 
-      {/* ── FLOATING PILL: bottom on phones, top from sm up ────────────────── */}
-      <div className="fixed bottom-6 sm:top-6 sm:bottom-auto left-1/2 -translate-x-1/2 z-50 transition-all duration-300 ease-in-out">
+      {/* ── FLOATING PILL: bottom on phones, top from sm up ──────────────────
+
+          From sm up the pill shares the top strip with the logo and the CTA, so
+          its offset has to track the strip's padding — otherwise, once the
+          header collapses on scroll, the pill hangs below the bar it is meant
+          to sit inside. On phones it stays docked to the bottom edge, where a
+          thumb reaches it. */}
+      <div
+        className={`fixed bottom-4 sm:bottom-auto left-1/2 -translate-x-1/2 z-50 transition-[top] duration-300 ease-in-out ${
+          isScrolled ? 'sm:top-1.5' : 'sm:top-6'
+        }`}
+      >
         <nav
           aria-label="Main navigation"
           data-material="chrome"
@@ -199,7 +252,7 @@ export const Navbar: React.FC<NavbarProps> = ({ linkBase = '' }) => {
                 aria-current={isActive ? 'true' : undefined}
                 // px tightened from 6 to 5 at sm: five links now share the pill,
                 // and the old padding pushed it past the hero's column on md.
-                className={`relative cursor-pointer text-sm font-semibold px-4 py-2 sm:px-5 rounded-full transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#6DBE30] ${
+                className={`relative cursor-pointer font-display text-sm font-medium tracking-tight px-4 py-2 sm:px-5 rounded-full transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#6DBE30] ${
                   isActive ? 'text-white' : 'text-zinc-400 hover:text-white'
                 }`}
               >

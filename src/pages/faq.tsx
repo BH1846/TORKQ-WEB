@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { ChevronDown } from 'lucide-react';
 import { Seo } from '../components/seo';
 import { ContentPage } from '../components/layout/content-page';
+import { Breadcrumbs, breadcrumbSchema } from '../components/ui/breadcrumbs';
 import { FAQ_ITEMS, type FaqItem } from '../content/faq';
 
 /**
@@ -64,17 +65,21 @@ const FaqEntry: React.FC<{ item: FaqItem; defaultOpen: boolean }> = ({
   </details>
 );
 
+const TRAIL = [{ label: 'FAQ' }];
+
 export default function FaqPage() {
   return (
     <ContentPage>
       <Seo
-        title="FAQ — AI Governance Gateway, DPDP Act and PII Masking | TorkQ"
-        description="Answers on what an AI governance gateway is, how TorkQ masks PII before prompts reach an LLM, what the DPDP Act requires, on-premise deployment, and the tamper-evident audit trail."
+        title="FAQ — AI Governance Gateway, DPDP Act and PII Masking | Torkq"
+        description="Answers on what an AI governance gateway is, how Torkq masks PII before prompts reach an LLM, what the DPDP Act requires, on-premise deployment, and the tamper-evident audit trail."
         canonical="/faq"
-        structuredData={faqPageSchema(FAQ_ITEMS)}
+        structuredData={[faqPageSchema(FAQ_ITEMS), breadcrumbSchema(TRAIL)]}
       />
 
       <div className="mx-auto w-full max-w-3xl px-4 sm:px-6">
+        <Breadcrumbs trail={TRAIL} className="mb-8" />
+
         <header className="mb-12 sm:mb-16">
           <span className="inline-block text-xs font-mono font-bold tracking-widest uppercase px-3 py-1 rounded-full bg-[#6DBE30]/10 border border-[#6DBE30]/20 text-[#6DBE30]">
             FAQ
@@ -83,7 +88,7 @@ export default function FaqPage() {
             Frequently asked questions.
           </h1>
           <p className="mt-5 text-base sm:text-lg text-zinc-400 leading-body">
-            What TorkQ does, where it runs, and how it fits the obligations you
+            What Torkq does, where it runs, and how it fits the obligations you
             already have.
           </p>
         </header>
@@ -109,10 +114,10 @@ export default function FaqPage() {
             , or see the gateway run on a real prompt.
           </p>
           <a
-            href="/#get-torkq"
+            href="/contact"
             className="mt-7 inline-block rounded-full bg-[#6DBE30] px-7 py-3 text-sm font-bold text-black shadow-lg shadow-[#6DBE30]/20 transition-colors duration-300 hover:bg-[#8BE14A] focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
           >
-            GET TORKQ
+            Get Torkq
           </a>
         </aside>
       </div>

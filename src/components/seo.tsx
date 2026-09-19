@@ -53,7 +53,7 @@ function siteStructuredData(): Record<string, unknown>[] {
       url: absoluteUrl('/'),
       logo: absoluteUrl('/logo.png'),
       description:
-        'TorkQ builds an on-premise AI governance gateway that masks sensitive data in prompts before they reach a large language model.',
+        'Torkq builds an on-premise AI governance gateway that masks sensitive data in prompts before they reach a large language model.',
     },
     {
       '@context': 'https://schema.org',

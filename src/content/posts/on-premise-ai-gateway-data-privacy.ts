@@ -22,7 +22,7 @@ export const post: Post = {
   ],
   datePublished: '2026-08-13',
   dateModified: '2026-08-13',
-  author: 'TorkQ Team',
+  author: 'Torkq Team',
   readingTime: '7 min read',
   tags: ['On-Premise', 'Architecture', 'Data Privacy'],
   body: [
@@ -200,8 +200,8 @@ export const post: Post = {
     {
       type: 'paragraph',
       spans: [
-        'TorkQ is built for that placement: an on-premise AI governance gateway running on your own server or private cloud, masking before egress, holding your keys, and keeping a tamper-evident record on your side of the line. See how it works on the ',
-        { text: 'TorkQ homepage', href: '/' },
+        'Torkq is built for that placement: an on-premise AI governance gateway running on your own server or private cloud, masking before egress, holding your keys, and keeping a tamper-evident record on your side of the line. See how it works on the ',
+        { text: 'Torkq homepage', href: '/' },
         '.',
       ],
     },

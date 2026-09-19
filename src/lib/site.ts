@@ -9,14 +9,14 @@ export const DOMAIN = 'www.torkq.com';
 
 export const SITE_ORIGIN = `https://${DOMAIN}`;
 
-export const SITE_NAME = 'TorkQ';
+export const SITE_NAME = 'Torkq';
 
 export const DEFAULT_TITLE =
-  'TorkQ — AI Governance Gateway for Regulated Enterprises';
+  'Torkq — AI Governance Gateway for Regulated Enterprises';
 
 /** Kept to ~155 characters so search results show it without truncation. */
 export const DEFAULT_DESCRIPTION =
-  'TorkQ is an on-premise AI governance gateway that masks PII in prompts before they reach an LLM, controls model access, and logs a tamper-evident audit trail.';
+  'Torkq is an on-premise AI governance gateway that masks PII in prompts before they reach an LLM, controls model access, and logs a tamper-evident audit trail.';
 
 export const DEFAULT_OG_IMAGE = `${SITE_ORIGIN}/og-image.png`;
 

@@ -715,7 +715,7 @@ export const ScanSequence: React.FC<ScanSequenceProps> = ({
     return <>{elements}</>;
   };
 
-  const isScanningOrTransformingAtTorkQ =
+  const isScanningOrTransformingAtTorkq =
     beat === 'SCAN_TORKQ' ||
     beat === 'PAUSE_SCAN' ||
     beat === 'TRANSFORM_TORKQ' ||
@@ -760,12 +760,19 @@ export const ScanSequence: React.FC<ScanSequenceProps> = ({
             } found so far.`}
       </div>
 
-      {/* SKIP CONTROL — every transition must be leavable. Escape does the same. */}
+      {/* SKIP CONTROL — every transition must be leavable. Escape does the same.
+
+          bottom-24 below sm, because the nav pill is docked at the bottom of
+          the phone viewport at the same centred x. At bottom-6 this button
+          landed squarely on top of it: during a scan the only two controls on
+          screen occupied one spot, and the one underneath was the navigation.
+          From sm up the pill is at the top of the page and there is no
+          conflict. */}
       <button
         type="button"
         onClick={() => finishRef.current?.()}
         data-material="chrome"
-        className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[10000] px-4 py-2 rounded-full border border-white/20 bg-black/60 backdrop-blur-xl text-neutral-200 hover:text-white hover:border-white/40 font-mono text-[11px] uppercase tracking-wider transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-[#6DBE30] cursor-pointer"
+        className="fixed bottom-24 sm:bottom-6 left-1/2 -translate-x-1/2 z-[10000] px-4 py-2 rounded-full border border-white/20 bg-black/60 backdrop-blur-xl text-neutral-200 hover:text-white hover:border-white/40 font-mono text-[11px] uppercase tracking-wider transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-[#6DBE30] cursor-pointer"
       >
         Skip to results <span aria-hidden="true">(Esc)</span>
       </button>
@@ -897,7 +904,7 @@ export const ScanSequence: React.FC<ScanSequenceProps> = ({
             </div>
 
             {/* SUB-LABELS BENEATH CARD TEXT DURING SCAN */}
-            {isScanningOrTransformingAtTorkQ && (
+            {isScanningOrTransformingAtTorkq && (
               <div className="mt-3 pt-2.5 border-t border-white/20 font-mono text-xs space-y-1 text-neutral-200">
                 {announceTier0 && (
                   <div className="text-amber-400 font-bold flex items-center gap-2">

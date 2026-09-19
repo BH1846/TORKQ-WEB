@@ -1,7 +1,7 @@
 /**
- * TorkQ contact-form endpoint — Google Apps Script Web App.
+ * Torkq contact-form endpoint — Google Apps Script Web App.
  *
- * Appends every contact-form submission to the TorkQ Responses spreadsheet.
+ * Appends every contact-form submission to the Torkq Responses spreadsheet.
  * The site is a static build with no server of its own, so this script is the
  * whole backend: the browser POSTs JSON here, and Apps Script writes the row
  * under the sheet owner's own authorisation. No API key or service-account

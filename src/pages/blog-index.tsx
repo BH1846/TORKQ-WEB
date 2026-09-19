@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { CalendarDays, Clock } from 'lucide-react';
 import { Seo } from '../components/seo';
 import { ContentPage } from '../components/layout/content-page';
+import { Breadcrumbs, breadcrumbSchema } from '../components/ui/breadcrumbs';
 import { posts, postPath } from '../content/posts';
 import { formatDate } from '../lib/format';
 
@@ -13,16 +14,21 @@ import { formatDate } from '../lib/format';
  * Cards are derived from the post registry and ordered newest first by that
  * module, so publishing a post surfaces it here with no edit to this file.
  */
+const TRAIL = [{ label: 'Blog' }];
+
 export default function BlogIndexPage() {
   return (
     <ContentPage>
       <Seo
-        title="Blog — AI Governance, DPDP Act and LLM Data Privacy | TorkQ"
+        title="Blog — AI Governance, DPDP Act and LLM Data Privacy | Torkq"
         description="Practical writing on AI governance: DPDP Act compliance for AI, preventing PII leaks to LLMs, and why on-premise AI gateways matter for data privacy."
         canonical="/blog"
+        structuredData={breadcrumbSchema(TRAIL)}
       />
 
       <div className="mx-auto w-full max-w-[1100px] px-4 sm:px-6">
+        <Breadcrumbs trail={TRAIL} className="mb-8" />
+
         <header className="mb-14 sm:mb-20 max-w-3xl">
           <span className="inline-block text-xs font-mono font-bold tracking-widest uppercase px-3 py-1 rounded-full bg-[#6DBE30]/10 border border-[#6DBE30]/20 text-[#6DBE30]">
             Blog

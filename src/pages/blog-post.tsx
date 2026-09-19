@@ -4,6 +4,7 @@ import { ArrowLeft, CalendarDays, Clock } from 'lucide-react';
 import { Seo } from '../components/seo';
 import { ContentPage } from '../components/layout/content-page';
 import { Prose } from '../components/blog/prose';
+import { Breadcrumbs, breadcrumbSchema } from '../components/ui/breadcrumbs';
 import { getPostBySlug, postPath } from '../content/posts';
 import {
   DEFAULT_OG_IMAGE,
@@ -69,12 +70,13 @@ export default function BlogPostPage() {
     return (
       <ContentPage>
         <Seo
-          title="Post not found | TorkQ"
+          title="Post not found | Torkq"
           description="This post could not be found."
           canonical="/blog"
           noindex
         />
         <div className="mx-auto w-full max-w-3xl px-4 sm:px-6">
+          <Breadcrumbs trail={[{ label: 'Blog', to: '/blog' }, { label: 'Not found' }]} className="mb-8" />
           <h1 className="text-3xl font-bold text-white">Post not found</h1>
           <p className="mt-4 text-zinc-400">
             That post does not exist, or its address has changed.
@@ -91,26 +93,26 @@ export default function BlogPostPage() {
     );
   }
 
+  /* The post's own crumb is its title, which is also the <h1> — the trail
+     mirrors the page rather than inventing a shorter name for it. */
+  const trail = [{ label: 'Blog', to: '/blog' }, { label: post.title }];
+
   return (
     <ContentPage>
       <Seo
-        title={`${post.title} | TorkQ`}
+        title={`${post.title} | Torkq`}
         description={post.description}
         canonical={postPath(post)}
         ogType="article"
-        structuredData={blogPostingSchema(post)}
+        structuredData={[blogPostingSchema(post), breadcrumbSchema(trail)]}
       />
 
       {/* max-w-3xl holds the measure at a readable line length. The metadata
           and prose share it so nothing runs wider than the text. */}
       <article className="mx-auto w-full max-w-3xl px-4 sm:px-6">
-        <Link
-          to="/blog"
-          className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-zinc-400 transition-colors hover:text-[#6DBE30]"
-        >
-          <ArrowLeft className="h-3.5 w-3.5" aria-hidden="true" />
-          All posts
-        </Link>
+        {/* Replaces the bare "All posts" link. Same one-tap way back, plus the
+            level above it and the marked-up trail that goes with it. */}
+        <Breadcrumbs trail={trail} />
 
         <header className="mt-8 mb-12 border-b border-white/10 pb-10">
           <h1 className="text-3xl sm:text-4xl lg:text-[2.75rem] font-bold text-white tracking-heading leading-heading">
@@ -155,15 +157,15 @@ export default function BlogPostPage() {
             See it run on a real prompt.
           </h2>
           <p className="mx-auto mt-3 max-w-xl text-sm text-zinc-400 leading-body">
-            TorkQ detects and masks sensitive values before a prompt leaves your
+            Torkq detects and masks sensitive values before a prompt leaves your
             network, controls which models each user can reach, and records every
             governed request.
           </p>
           <a
-            href="/#get-torkq"
+            href="/contact"
             className="mt-7 inline-block rounded-full bg-[#6DBE30] px-7 py-3 text-sm font-bold text-black shadow-lg shadow-[#6DBE30]/20 transition-colors duration-300 hover:bg-[#8BE14A] focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
           >
-            GET TORKQ
+            Get Torkq
           </a>
         </aside>
 

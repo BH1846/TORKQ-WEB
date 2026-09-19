@@ -49,6 +49,13 @@ const staticRoutes: SiteRoute[] = [
     changefreq: 'monthly',
     priority: 0.8,
   },
+  {
+    // The conversion page, and the target of every primary CTA on the site.
+    path: '/contact',
+    lastmod: '2026-09-19',
+    changefreq: 'monthly',
+    priority: 0.9,
+  },
 ];
 
 const postRoutes: SiteRoute[] = posts.map((post) => ({

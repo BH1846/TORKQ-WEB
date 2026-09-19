@@ -9,6 +9,7 @@ import HomePage from './pages/home';
 import BlogIndexPage from './pages/blog-index';
 import BlogPostPage from './pages/blog-post';
 import FaqPage from './pages/faq';
+import ContactPage from './pages/contact';
 
 /**
  * The route tree vite-react-ssg pre-renders.
@@ -50,6 +51,7 @@ export const routes: RouteRecord[] = [
         getStaticPaths: () => posts.map(postPath),
       },
       { path: 'faq', element: <FaqPage /> },
+      { path: 'contact', element: <ContactPage /> },
     ],
   },
 ];

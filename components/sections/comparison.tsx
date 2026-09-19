@@ -352,14 +352,14 @@ export const ComparisonSection: React.FC = () => {
             />
 
             <div className="relative z-10 flex items-center justify-center gap-3 mb-10 sm:mb-12">
-              {/* <BirdMark>, not <TorkQLogo>: the latter is an <img> of
+              {/* <BirdMark>, not <TorkqLogo>: the latter is an <img> of
                   /logo.svg, which carries an opaque #030404 backing square. On
                   black that square is invisible, but this panel's gradient is a
                   dark green, so it reads as a black tile behind the bird. The
                   inline mark has no rect and no padding to offset it. */}
               <BirdMark className="h-8 w-auto shrink-0" />
               <h3 className="font-display text-2xl font-black tracking-tight text-white text-center">
-                TorkQ Gateway
+                Torkq Gateway
               </h3>
             </div>
 

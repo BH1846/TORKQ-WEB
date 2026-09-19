@@ -274,8 +274,12 @@ export const ExposureInput: React.FC<ExposureInputProps> = ({ flowDiagramRef }) 
         </div>
       </div>
 
-      {/* EXPOSURE REPORT MOUNT POINT */}
-      <div ref={reportRef} className="pt-4">
+      {/* EXPOSURE REPORT MOUNT POINT
+
+          scroll-mt clears the fixed header. The sequence scrolls this into
+          view with block:'start', which without it parks the report's first
+          line — the exposure score — underneath the top bar. */}
+      <div ref={reportRef} className="pt-4 scroll-mt-28">
         {hasAnalyzed && !isScanning && (
           <ExposureReport
             promptText={promptText}

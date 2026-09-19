@@ -1,9 +1,9 @@
 import React from 'react';
 
 /**
- * The TorkQ bird, inline and unboxed.
+ * The Torkq bird, inline and unboxed.
  *
- * Distinct from <TorkQLogo>, which points an <img> at /logo.svg — that file
+ * Distinct from <TorkqLogo>, which points an <img> at /logo.svg — that file
  * carries an opaque #030404 backing square and pads the mark inside a square
  * 2160 viewBox. Both are fine behind a tile; neither survives standing alone,
  * where the square reads as the very box it is supposed to have lost.
@@ -23,8 +23,8 @@ import React from 'react';
 export const BirdMark: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
   <svg
     viewBox="24 155 2100 1850"
-    /* Decorative: every placement pairs the mark with the TorkQ name in
-       adjacent text, so naming it here would say "TorkQ" twice. */
+    /* Decorative: every placement pairs the mark with the Torkq name in
+       adjacent text, so naming it here would say "Torkq" twice. */
     aria-hidden="true"
     focusable="false"
     {...props}

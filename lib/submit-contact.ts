@@ -1,6 +1,6 @@
 /**
  * Posts a contact-form submission to the Google Apps Script Web App that
- * appends it to the TorkQ Responses spreadsheet.
+ * appends it to the Torkq Responses spreadsheet.
  *
  * See google-apps-script/contact-endpoint.gs for the receiving end and its
  * deployment steps. The endpoint URL lives in VITE_SHEETS_ENDPOINT; it is a

@@ -49,7 +49,7 @@ const KEY_FEATURES: KeyFeature[] = [
   {
     icon: Network,
     title: 'Multi-Provider Routing',
-    body: 'Register cloud provider APIs and your own model servers side by side, and route requests across them. TorkQ runs no inference of its own.',
+    body: 'Register cloud provider APIs and your own model servers side by side, and route requests across them. Torkq runs no inference of its own.',
   },
   {
     icon: Terminal,

@@ -170,8 +170,8 @@ const REGULATIONS: Regulation[] = [
 ];
 
 const MODES: { id: Mode; label: string }[] = [
-  { id: 'without', label: 'Without TorkQ' },
-  { id: 'with', label: 'With TorkQ' },
+  { id: 'without', label: 'Without Torkq' },
+  { id: 'with', label: 'With Torkq' },
 ];
 
 /** See CHART CONSTRUCTION above before swapping either of these. */
@@ -500,7 +500,7 @@ export const RiskGraphSection: React.FC = () => {
               </span>
               <span className="inline-flex items-center gap-1.5">
                 <span aria-hidden="true" className="inline-block h-2 w-0.5 rounded-full bg-zinc-500" />
-                {mode === 'with' ? 'Without TorkQ' : 'With TorkQ'}, for reference
+                {mode === 'with' ? 'Without Torkq' : 'With Torkq'}, for reference
               </span>
             </div>
 
@@ -526,7 +526,7 @@ export const RiskGraphSection: React.FC = () => {
               <div className="overflow-x-auto px-4 pb-4">
                 <table className="w-full min-w-[42rem] border-collapse text-left">
                   <caption className="sr-only">
-                    Data-protection regimes the TorkQ gateway bears on, what each provision
+                    Data-protection regimes the Torkq gateway bears on, what each provision
                     requires, the control that applies, the maximum penalty, and the modelled risk
                     level with and without the gateway.
                   </caption>
@@ -606,7 +606,7 @@ export const RiskGraphSection: React.FC = () => {
                   any of them here, and a gateway does not lower a ceiling — it lowers the risk of
                   meeting one. The HIPAA and CCPA figures are adjusted for inflation each year;
                   check the current notice. Risk levels are a qualitative model, not measured data
-                  or an audit result. TorkQ is one control in a compliance programme, not a
+                  or an audit result. Torkq is one control in a compliance programme, not a
                   substitute for one, and addresses the specific obligation named on each row
                   rather than the regime as a whole. Not legal advice.
                 </p>

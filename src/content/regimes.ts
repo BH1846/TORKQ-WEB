@@ -22,7 +22,7 @@
  *    is the risk of meeting one, which is what `risk` models.
  *  - `relevance: 'direct'` requires that the cited provision is substantially
  *    what the gateway does. Anything with a carve-out is 'partial', and its
- *    `withTorkQ` text MUST carry the limitation clause naming what remains the
+ *    `withTorkq` text MUST carry the limitation clause naming what remains the
  *    reader's duty. Deleting a limitation clause to make a row read better is
  *    the single most damaging edit possible to this file.
  *  - Section 8(6) is a NOTIFICATION duty. Its copy may never imply that a
@@ -70,9 +70,9 @@ export interface Regime {
   /** Comparative index 0–100 in each state. See ACCURACY RULES. */
   risk: { without: number; with: number };
   /** The exposure with prompts going straight to a provider. */
-  withoutTorkQ: string;
+  withoutTorkq: string;
   /** What the gateway does, plus the carve-out when relevance is 'partial'. */
-  withTorkQ: string;
+  withTorkq: string;
 }
 
 export const REGIMES: Regime[] = [
@@ -89,9 +89,9 @@ export const REGIMES: Regime[] = [
     relevance: 'direct',
     tagLabel: 'Directly reduced',
     risk: { without: 95, with: 25 },
-    withoutTorkQ:
+    withoutTorkq:
       "Prompts carrying personal data leave your network in plain text and are retained under the provider's policy, not yours.",
-    withTorkQ:
+    withTorkq:
       'Sensitive values are masked before a prompt leaves your network, so they are never transmitted to or retained by an external model provider.',
   },
   {
@@ -107,12 +107,12 @@ export const REGIMES: Regime[] = [
     relevance: 'partial',
     tagLabel: 'Partially reduced',
     risk: { without: 85, with: 55 },
-    withoutTorkQ:
+    withoutTorkq:
       'Every prompt containing personal data is another exposure you would have to detect, assess and report — with no record of what left, or when.',
     // Wording is fixed. This is a notification duty: the claim is reduced
     // likelihood and faster detection, never prevention. See ACCURACY RULES.
-    withTorkQ:
-      'Fewer raw-data exposures means fewer breach events to report, and the admin dashboard surfaces anomalies so you detect faster. The statutory duty to notify the Board when a breach does occur still rests with you — TorkQ does not discharge it.',
+    withTorkq:
+      'Fewer raw-data exposures means fewer breach events to report, and the admin dashboard surfaces anomalies so you detect faster. The statutory duty to notify the Board when a breach does occur still rests with you — Torkq does not discharge it.',
   },
   {
     id: 'dpdp-9',
@@ -128,11 +128,11 @@ export const REGIMES: Regime[] = [
     relevance: 'partial',
     tagLabel: 'Partially reduced',
     risk: { without: 70, with: 42 },
-    withoutTorkQ:
+    withoutTorkq:
       "Children's and health identifiers pasted into a prompt leave with everything else — nothing in the request distinguishes them from ordinary text.",
     // Wording is fixed. The parental-consent carve-out is what keeps this row
     // amber rather than green, and may not be dropped.
-    withTorkQ:
+    withTorkq:
       "Custom data classification lets you define children's and health identifiers as maskable types, so that data is tokenised before it reaches an external model. It does not handle verifiable parental consent, which the section also requires.",
   },
   {
@@ -148,9 +148,9 @@ export const REGIMES: Regime[] = [
     relevance: 'direct',
     tagLabel: 'Directly reduced',
     risk: { without: 85, with: 24 },
-    withoutTorkQ:
+    withoutTorkq:
       'No documented control point between the prompt and the provider, and no record to show a reasonable security practice was in place.',
-    withTorkQ:
+    withTorkq:
       'The SPDI Rules ask for a documented, auditable security practice. On-premise deployment plus a tamper-evident log is evidence you ran one.',
   },
   {
@@ -167,9 +167,9 @@ export const REGIMES: Regime[] = [
     relevance: 'direct',
     tagLabel: 'Directly reduced',
     risk: { without: 90, with: 28 },
-    withoutTorkQ:
+    withoutTorkq:
       'Personal data crosses to a provider outside the EEA with no transfer mechanism of your own, and the prompt carries more than the model needs.',
-    withTorkQ:
+    withTorkq:
       'Tokenising identifiers before egress means the personal data never crosses a border, and the prompt that does leave carries the minimum the model needs.',
   },
   {
@@ -186,9 +186,9 @@ export const REGIMES: Regime[] = [
     relevance: 'partial',
     tagLabel: 'Partially reduced',
     risk: { without: 70, with: 35 },
-    withoutTorkQ:
+    withoutTorkq:
       'No automatic record of who used which model, on what input, or when.',
-    withTorkQ:
+    withTorkq:
       'Every request through the gateway is logged in a chain that breaks if altered, which is the record-keeping half of the deployer duty. Conformity assessment and human oversight remain yours.',
   },
   {
@@ -206,9 +206,9 @@ export const REGIMES: Regime[] = [
     relevance: 'direct',
     tagLabel: 'Directly reduced',
     risk: { without: 88, with: 26 },
-    withoutTorkQ:
+    withoutTorkq:
       'ePHI is transmitted to a third party with no per-user access control and no audit record you can produce.',
-    withTorkQ:
+    withTorkq:
       'Per-user model access, a hash-chained record of every request, and health identifiers stripped before transmission — the three technical safeguards the section names.',
   },
   {
@@ -225,9 +225,9 @@ export const REGIMES: Regime[] = [
     relevance: 'direct',
     tagLabel: 'Directly reduced',
     risk: { without: 75, with: 30 },
-    withoutTorkQ:
+    withoutTorkq:
       'Personal information is disclosed to a third-party model outside the purpose you stated to the consumer.',
-    withTorkQ:
+    withTorkq:
       'Personal information is replaced with tokens before it reaches a third-party model, so it is not disclosed to a processor outside your stated purpose.',
   },
 ];

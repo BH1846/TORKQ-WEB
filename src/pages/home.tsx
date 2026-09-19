@@ -44,14 +44,24 @@ const CONTENT = 'w-full max-w-[900px] mx-auto';
  * Wrapper that recedes while the scan choreography owns the screen.
  * Opacity only — no transform — so it stays compositor-cheap and reads as
  * depth rather than movement.
+ *
+ * `interactive` keeps a region clickable while it is dimmed. Only the
+ * navigation uses it: the scan runs for the better part of ten seconds, and
+ * suppressing pointer events on the nav along with everything else meant the
+ * one control a visitor reaches for when a demo has taken over the page —
+ * leaving it — was dead for the duration. Dimming is a statement about focus,
+ * not a lock on the door.
  */
-const Dimmable: React.FC<{ dimmed: boolean; children: React.ReactNode }> = ({
-  dimmed,
-  children,
-}) => (
+const Dimmable: React.FC<{
+  dimmed: boolean;
+  interactive?: boolean;
+  children: React.ReactNode;
+}> = ({ dimmed, interactive = false, children }) => (
   <div
     className={`transition-opacity duration-500 ${
-      dimmed ? 'opacity-[0.12] pointer-events-none' : 'opacity-100'
+      dimmed
+        ? `opacity-[0.12] ${interactive ? '' : 'pointer-events-none'}`
+        : 'opacity-100'
     }`}
   >
     {children}
@@ -80,21 +90,26 @@ export default function HomePage() {
       <div className="fixed top-1/4 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-[#6DBE30]/10 blur-[160px] rounded-full pointer-events-none -z-10" />
 
       {/* Floating Sticky Navigation Bar */}
-      <Dimmable dimmed={isScanningState}>
+      <Dimmable dimmed={isScanningState} interactive>
         <Navbar />
       </Dimmable>
 
       {/* Main Content Area */}
-      <main className="relative z-10 space-y-8 sm:space-y-12">
+      <main className="relative z-10 space-y-4 sm:space-y-12">
         {/* HERO SECTION */}
         <Dimmable dimmed={isScanningState}>
           <HeroSection />
         </Dimmable>
 
         {/* HERO DATA-FLOW DIAGRAM SECTION */}
+        {/* min-h below sm is the diagram's own height plus a little, not the
+            desktop reserve. Pinned to the content column the SVG is only about
+            a third as tall on a phone, and the old 220 left a band of empty
+            black under it — which, with the demo block's my-12, pushed the
+            chatbox's action row down under the docked nav pill. */}
         <section
           id="flow"
-          className={`relative ${COLUMN} min-h-[220px] sm:min-h-[260px] flex items-center justify-center transition-opacity duration-500 ${
+          className={`relative ${COLUMN} min-h-[150px] sm:min-h-[260px] flex items-center justify-center transition-opacity duration-500 ${
             isScanningState ? 'z-[45] opacity-100' : 'z-10'
           }`}
         >
@@ -104,7 +119,7 @@ export default function HomePage() {
         {/* INTERACTIVE DEMO SECTION */}
         <section
           id="demo"
-          className={`${COLUMN} min-h-[380px] my-12 scroll-mt-28`}
+          className={`${COLUMN} min-h-[380px] my-6 sm:my-12 scroll-mt-28`}
         >
           <Dimmable dimmed={isScanningState}>
             <ExposureInput flowDiagramRef={flowDiagramRef} />

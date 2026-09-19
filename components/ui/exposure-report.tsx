@@ -451,7 +451,7 @@ export const ExposureReport: React.FC<ExposureReportProps> = ({
         <div className="border-b border-white/10 pb-3 flex flex-col sm:flex-row sm:items-center justify-between gap-1">
           <div>
             <h3 className="text-sm font-mono font-bold uppercase tracking-wider text-white">
-              The Flip — Before & After TorkQ
+              The Flip — Before & After Torkq
             </h3>
             <p className="text-xs font-sans text-neutral-400">
               Visual comparison of raw prompt vs sanitised payload
@@ -478,7 +478,7 @@ export const ExposureReport: React.FC<ExposureReportProps> = ({
           <div className="space-y-2">
             <div className="text-[11px] uppercase font-bold text-[#6DBE30] flex items-center gap-1.5">
               <span className="w-2 h-2 rounded-full bg-[#6DBE30]" />
-              TorkQ Sanitised Token Stream
+              Torkq Sanitised Token Stream
             </div>
             <pre className="p-3 rounded-xl bg-[#6DBE30]/10 border border-[#6DBE30]/30 text-[#8BE14A] whitespace-pre-wrap leading-relaxed text-[11px] min-h-[120px]">
               {maskedPrompt(promptText, findings)}
