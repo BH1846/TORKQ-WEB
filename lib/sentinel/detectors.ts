@@ -673,7 +673,7 @@ export function resolveSpans(findings: Finding[]): Finding[] {
 }
 
 /**
- * Main detection pipeline for TorkQ Sentinel Engine.
+ * Main detection pipeline for Torkq Sentinel Engine.
  * Scans input text and returns non-overlapping findings.
  */
 export function detectFindings(text: string): Finding[] {

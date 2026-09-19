@@ -22,7 +22,7 @@ export const post: Post = {
   ],
   datePublished: '2026-08-13',
   dateModified: '2026-08-13',
-  author: 'TorkQ Team',
+  author: 'Torkq Team',
   readingTime: '7 min read',
   tags: ['PII', 'Data Protection', 'LLM Security'],
   body: [
@@ -207,7 +207,7 @@ export const post: Post = {
     {
       type: 'paragraph',
       spans: [
-        'TorkQ does this at the egress point, on your own infrastructure. The ',
+        'Torkq does this at the egress point, on your own infrastructure. The ',
         { text: 'homepage demo', href: '/#demo' },
         ' runs the detection on a prompt you type and shows what would have been masked before it left.',
       ],

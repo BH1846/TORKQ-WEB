@@ -38,7 +38,7 @@ export const GetDemoSection: React.FC = () => {
             </h2>
 
             <p className="text-zinc-400 max-w-2xl mx-auto text-base sm:text-lg font-sans leading-body">
-              We'll walk through TorkQ running against your own traffic patterns —
+              We'll walk through Torkq running against your own traffic patterns —
               on-premise deployment, what gets masked, and what the evidence chain looks
               like when an auditor asks.
             </p>

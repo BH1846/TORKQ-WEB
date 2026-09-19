@@ -24,7 +24,19 @@ const FIELD_CLASS =
 const LABEL_CLASS =
   'block text-xs font-mono font-semibold text-neutral-300 uppercase tracking-wider mb-2';
 
-export const ContactSection: React.FC = () => {
+export interface ContactSectionProps {
+  /**
+   * The big "Get in touch" lockup. On the homepage this block is the section's
+   * title and has to be there; on /contact the page already has an <h1>, and a
+   * second display-sized heading immediately under it competes with it and
+   * puts two headings in the outline for one thing.
+   */
+  showHeading?: boolean;
+}
+
+export const ContactSection: React.FC<ContactSectionProps> = ({
+  showHeading = true,
+}) => {
   const { accent, reducedMotion } = useThemeState();
   const [submitted, setSubmitted] = useState(false);
   const [hovered, setHovered] = useState(false);
@@ -86,18 +98,20 @@ export const ContactSection: React.FC = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 items-start">
         {/* ── Left: the address block, which is now an inbox rather than a door ── */}
         <Reveal className="space-y-10">
-          <h2 className="font-display text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[0.95] text-white">
-            {HEADING_WORDS.map((word) => (
-              <span key={word} className="block">
-                <span
-                  className="inline-block border-b-[6px] pb-1"
-                  style={{ borderColor: accent }}
-                >
-                  {word}
+          {showHeading && (
+            <h2 className="font-display text-5xl sm:text-6xl lg:text-7xl font-bold tracking-display leading-[0.95] text-white">
+              {HEADING_WORDS.map((word) => (
+                <span key={word} className="block">
+                  <span
+                    className="inline-block border-b-[6px] pb-1"
+                    style={{ borderColor: accent }}
+                  >
+                    {word}
+                  </span>
                 </span>
-              </span>
-            ))}
-          </h2>
+              ))}
+            </h2>
+          )}
 
           <div className="flex items-start gap-4">
             <span

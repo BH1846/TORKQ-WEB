@@ -19,12 +19,23 @@
   --color-tork-amber: var(--color-brand-amber);
   --color-tork-bg: var(--background);
 
-  /* Display face for the largest headlines. Currently the same system stack as
-     body copy — it exists so `font-display` is a real utility with one place to
-     change if a display typeface is ever adopted, rather than a class that
-     silently generates nothing. */
-  --font-display: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
-    Ubuntu, Cantarell, sans-serif;
+  /* Two faces, one job each.
+
+     Space Grotesk is the brand voice: the wordmark, the navigation and the
+     largest headlines. Its flat terminals and single-storey `a` read as
+     technical without tipping into a stencil face, which is what the mono
+     stack was doing to the logo.
+
+     Inter is the reading face — body copy, form labels, card text. It is
+     loaded at the weights actually used; adding more would cost a download
+     per weight for nothing.
+
+     Both stacks end in the system fonts so the page is legible before the
+     webfont lands (display=swap) and if it never does. */
+  --font-display: 'Space Grotesk', system-ui, -apple-system, BlinkMacSystemFont,
+    'Segoe UI', Roboto, sans-serif;
+  --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
 
   /* TYPE SCALE — tracking tightens as size grows, leading loosens as size shrinks.
      Never reuse one tracking value across sizes: large text reads too loose,
@@ -56,7 +67,7 @@ body {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  font-family: var(--font-sans);
 }
 
 /* Custom Scrollbar */

@@ -1,5 +1,5 @@
 /**
- * TorkQ Sentinel Checksum & Format Validation Engine
+ * Torkq Sentinel Checksum & Format Validation Engine
  * Pure TypeScript functions for regional and financial identifier validation.
  */
 

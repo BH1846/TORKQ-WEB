@@ -2,6 +2,7 @@ import type { Post } from '../types';
 import { post as dpdpActComplianceForAi } from './dpdp-act-compliance-for-ai';
 import { post as preventPiiLeaksToLlms } from './prevent-pii-leaks-to-llms';
 import { post as onPremiseAiGatewayDataPrivacy } from './on-premise-ai-gateway-data-privacy';
+import { post as shadowAiRiskManagement } from './shadow-ai-risk-management';
 
 /**
  * The post registry. Everything downstream is derived from this array: the
@@ -20,6 +21,7 @@ const registry: Post[] = [
   dpdpActComplianceForAi,
   preventPiiLeaksToLlms,
   onPremiseAiGatewayDataPrivacy,
+  shadowAiRiskManagement,
 ];
 
 /** Newest first — the order the blog index and the sitemap both want. */

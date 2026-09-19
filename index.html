@@ -16,11 +16,11 @@
       <title>s and two canonicals. Any tag added here that <Seo> also emits
       needs the attribute.
     -->
-    <title data-seo-static="true">TorkQ — AI Governance Gateway for Regulated Enterprises</title>
+    <title data-seo-static="true">Torkq — AI Governance Gateway for Regulated Enterprises</title>
     <meta
       data-seo-static="true"
       name="description"
-      content="TorkQ is an on-premise AI governance gateway that masks PII in prompts before they reach an LLM, controls model access, and logs a tamper-evident audit trail."
+      content="Torkq is an on-premise AI governance gateway that masks PII in prompts before they reach an LLM, controls model access, and logs a tamper-evident audit trail."
     />
 
     <link data-seo-static="true" rel="canonical" href="https://www.torkq.com/" />
@@ -28,16 +28,16 @@
 
     <!-- Open Graph -->
     <meta data-seo-static="true" property="og:type" content="website" />
-    <meta data-seo-static="true" property="og:site_name" content="TorkQ" />
+    <meta data-seo-static="true" property="og:site_name" content="Torkq" />
     <meta
       data-seo-static="true"
       property="og:title"
-      content="TorkQ — AI Governance Gateway for Regulated Enterprises"
+      content="Torkq — AI Governance Gateway for Regulated Enterprises"
     />
     <meta
       data-seo-static="true"
       property="og:description"
-      content="TorkQ is an on-premise AI governance gateway that masks PII in prompts before they reach an LLM, controls model access, and logs a tamper-evident audit trail."
+      content="Torkq is an on-premise AI governance gateway that masks PII in prompts before they reach an LLM, controls model access, and logs a tamper-evident audit trail."
     />
     <meta data-seo-static="true" property="og:url" content="https://www.torkq.com/" />
     <meta data-seo-static="true" property="og:image" content="https://www.torkq.com/og-image.png" />
@@ -47,12 +47,12 @@
     <meta
       data-seo-static="true"
       name="twitter:title"
-      content="TorkQ — AI Governance Gateway for Regulated Enterprises"
+      content="Torkq — AI Governance Gateway for Regulated Enterprises"
     />
     <meta
       data-seo-static="true"
       name="twitter:description"
-      content="TorkQ is an on-premise AI governance gateway that masks PII in prompts before they reach an LLM, controls model access, and logs a tamper-evident audit trail."
+      content="Torkq is an on-premise AI governance gateway that masks PII in prompts before they reach an LLM, controls model access, and logs a tamper-evident audit trail."
     />
     <meta data-seo-static="true" name="twitter:image" content="https://www.torkq.com/og-image.png" />
 
@@ -68,12 +68,29 @@
       {
         "@context": "https://schema.org",
         "@type": "Organization",
-        "name": "TorkQ",
+        "name": "Torkq",
         "url": "https://www.torkq.com",
         "logo": "https://www.torkq.com/logo.png",
-        "description": "TorkQ builds an on-premise AI governance gateway that masks sensitive data in prompts before they reach a large language model."
+        "description": "Torkq builds an on-premise AI governance gateway that masks sensitive data in prompts before they reach a large language model."
       }
     </script>
+
+    <!--
+      Brand typefaces. Space Grotesk carries the wordmark and the navigation —
+      it is the one face a visitor reads on every page, so it is what makes the
+      chrome look like Torkq rather than like the OS. Inter carries body copy.
+
+      Both are preconnected: the stylesheet is render-blocking, and without the
+      early handshake to fonts.gstatic.com the first paint waits on a fresh TLS
+      negotiation. display=swap means text paints in the fallback immediately
+      rather than sitting invisible while the font arrives.
+    -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap"
+    />
 
     <!-- SVG first: browsers that support it get the crisp mark at any size,
          and favicon.ico is the fallback for those that do not. Safari ignores

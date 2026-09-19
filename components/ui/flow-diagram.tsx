@@ -133,7 +133,7 @@ const NODE_Y = 118;
 /**
  * viewBox height.
  *
- * The node box runs 58..178 and the name under it lands at 196, with TorkQ's
+ * The node box runs 58..178 and the name under it lands at 196, with Torkq's
  * second line at 210 — so the artwork occupies 58..213 and this leaves 58 units
  * of air above and 37 below. Not symmetric on purpose: the leg captions and the
  * packets ride above the node centre, so the visual mass sits high and the two
@@ -157,7 +157,7 @@ const LEG_Y_ARCH = NODE_Y - 21;
 /**
  * Node names sit on one baseline under all four nodes — 18 units below the
  * shared box, outside it, so a card's border and an unboxed icon's artwork both
- * clear it by the same amount. TorkQ's descriptor is the only second line.
+ * clear it by the same amount. Torkq's descriptor is the only second line.
  */
 const LABEL_Y = NODE_HALF_H + 18;
 const LABEL_SUB_Y = LABEL_Y + 14;
@@ -392,16 +392,16 @@ export const FlowDiagram = forwardRef<FlowDiagramHandle, FlowDiagramProps>(
     const [manualFreeze, setManualFreeze] = useState(false);
     const [tokenIndex, setTokenIndex] = useState(0);
 
-    // Glow intensity state for TorkQ node transformation pulse
+    // Glow intensity state for Torkq node transformation pulse
     const [torkqPulse, setTorkqPulse] = useState(false);
     // Pulse state for AI node arrival
     const [aiPulse, setAiPulse] = useState(false);
 
     // Zoom state (1.0 -> 1.3)
     const [isZoomed, setIsZoomed] = useState(false);
-    // TorkQ rhythmic pulse during scanning
+    // Torkq rhythmic pulse during scanning
     const [torkqRhythmic, setTorkqRhythmic] = useState(false);
-    // TorkQ transformed state (red -> green)
+    // Torkq transformed state (red -> green)
     const [torkqTransformed, setTorkqTransformed] = useState(false);
 
     // Node spotlighting states
@@ -526,7 +526,7 @@ export const FlowDiagram = forwardRef<FlowDiagramHandle, FlowDiagramProps>(
         iconOpacity: 1.0,
         iconColor: '#A3A3A3',
         // labelColor now drives each node's own name, which is white at rest
-        // and takes the state colour only when the node lights up. TorkQ opts
+        // and takes the state colour only when the node lights up. Torkq opts
         // out entirely — its wordmark is fixed white/green.
         labelColor: '#FFFFFF',
         isLit: id === 'torkq',
@@ -534,7 +534,7 @@ export const FlowDiagram = forwardRef<FlowDiagramHandle, FlowDiagramProps>(
     };
 
     /**
-     * Workstation and TorkQ have no card, so there is no border to light and no
+     * Workstation and Torkq have no card, so there is no border to light and no
      * bloom to raise. Their spotlight is carried by the icon itself: a radial
      * glow behind it, its own opacity, and a scale step.
      *
@@ -590,7 +590,7 @@ export const FlowDiagram = forwardRef<FlowDiagramHandle, FlowDiagramProps>(
       if (nState === 'VISITED') {
         return { ...base, iconOpacity: 1, iconScale: 1, glowRadius: 76, glowOpacity: 0.14 };
       }
-      // NORMAL (ambient). TorkQ was the one node lit at rest before the cards
+      // NORMAL (ambient). Torkq was the one node lit at rest before the cards
       // went; it keeps that by holding a faint glow, and the transform pulse
       // brightens it where it used to thicken the border.
       const ambientLit = id === 'torkq';
@@ -897,7 +897,7 @@ export const FlowDiagram = forwardRef<FlowDiagramHandle, FlowDiagramProps>(
             const elapsed = now - p.startTime;
 
             if (p.type === 'transforming') {
-              // Pulse at TorkQ node for 400ms hold with smooth color cross
+              // Pulse at Torkq node for 400ms hold with smooth color cross
               const transformElapsed = now - (p.transformHoldStart || now);
               const holdRatio = Math.min(1, transformElapsed / 400);
 
@@ -994,7 +994,7 @@ export const FlowDiagram = forwardRef<FlowDiagramHandle, FlowDiagramProps>(
                   glyph: getRandomDataGlyph(),
                 });
               } else if (p.leg === 'B') {
-                // Arrived at TorkQ: trigger 400ms transformation & pulse glow
+                // Arrived at Torkq: trigger 400ms transformation & pulse glow
                 setTorkqPulse(true);
                 setTimeout(() => setTorkqPulse(false), 450);
 
@@ -1053,7 +1053,7 @@ export const FlowDiagram = forwardRef<FlowDiagramHandle, FlowDiagramProps>(
           ref={svgRef}
           viewBox={`0 0 ${VB_W} ${VB_H}`}
           className="w-full h-auto overflow-visible"
-          aria-label="TorkQ Data Flow Diagram"
+          aria-label="Torkq Data Flow Diagram"
         >
           <defs>
             {/* Arrowhead Markers */}
@@ -1123,7 +1123,7 @@ export const FlowDiagram = forwardRef<FlowDiagramHandle, FlowDiagramProps>(
 
           {/* ----------------------------------------------------------------
               Leg endpoints. Prompt and AI have cards, so those two legs stop at
-              a card edge. Workstation and TorkQ do not, so legs meet *inside*
+              a card edge. Workstation and Torkq do not, so legs meet *inside*
               those icons rather than at a card edge that is not there — A ends
               where B begins, on the monitor's centre, and B ends where C
               begins, on the bird's. One continuous dashed line, split only for
@@ -1561,19 +1561,20 @@ export const FlowDiagram = forwardRef<FlowDiagramHandle, FlowDiagramProps>(
 
             {/* Wordmark over descriptor, matching the nav lockup. Fixed
                 white/green/zinc — alone among the four names it never takes the
-                state colour; for TorkQ the accent stops at the glow. */}
+                state colour; for Torkq the accent stops at the glow. */}
             <text
               ref={tqTitleRef}
               x="0"
               y={LABEL_Y}
-              fontSize="16"
-              fontWeight="800"
-              letterSpacing="0.14em"
+              fontSize="17"
+              fontWeight="700"
+              letterSpacing="0.01em"
               textAnchor="middle"
+              fontFamily="var(--font-display)"
               style={{ opacity: torkqProps.textOpacity }}
             >
-              <tspan fill="#FFFFFF">TORK</tspan>
-              <tspan fill="#6DBE30">Q</tspan>
+              <tspan fill="#FFFFFF">Tork</tspan>
+              <tspan fill="#6DBE30">q</tspan>
             </text>
             <text
               ref={tqSubtitleRef}

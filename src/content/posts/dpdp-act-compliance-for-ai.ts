@@ -4,7 +4,7 @@ import type { Post } from '../types';
  * Target term: "DPDP Act compliance for AI".
  *
  * Every statement about the Act describes duties the Act text actually
- * creates. Every statement about TorkQ describes a control it provides. The
+ * creates. Every statement about Torkq describes a control it provides. The
  * two are kept separate on purpose — the post never says a control satisfies
  * an obligation, only that it supports meeting one.
  */
@@ -23,7 +23,7 @@ export const post: Post = {
   ],
   datePublished: '2026-08-13',
   dateModified: '2026-08-13',
-  author: 'TorkQ Team',
+  author: 'Torkq Team',
   readingTime: '8 min read',
   tags: ['DPDP Act', 'Compliance', 'AI Governance'],
   body: [
@@ -230,8 +230,8 @@ export const post: Post = {
     {
       type: 'paragraph',
       spans: [
-        'TorkQ is an on-premise AI governance gateway built for this boundary — detection and masking before prompts leave, per-user model access, and a tamper-evident audit trail. You can see it work on a real prompt on the ',
-        { text: 'TorkQ homepage', href: '/' },
+        'Torkq is an on-premise AI governance gateway built for this boundary — detection and masking before prompts leave, per-user model access, and a tamper-evident audit trail. You can see it work on a real prompt on the ',
+        { text: 'Torkq homepage', href: '/' },
         '.',
       ],
     },

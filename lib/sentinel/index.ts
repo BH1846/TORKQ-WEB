@@ -1,5 +1,5 @@
 /**
- * TorkQ Sentinel Engine - On-Device Privacy & PII Detection
+ * Torkq Sentinel Engine - On-Device Privacy & PII Detection
  */
 
 export * from './types';

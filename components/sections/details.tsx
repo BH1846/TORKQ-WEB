@@ -10,26 +10,35 @@ interface CoreFeature {
   icon: LucideIcon;
 }
 
+/**
+ * Card copy is capped at roughly 25 words.
+ *
+ * These four ran 40-plus each, and stacked into a wall of grey text that
+ * nobody finished — on a phone one card filled most of the screen. A
+ * capability card has one job: name the capability and give the single fact
+ * that makes it credible. The detail that used to live here has somewhere
+ * better to be — the key-features grid below, and the blog.
+ */
 const CORE_FEATURES: CoreFeature[] = [
   {
     icon: LayoutDashboard,
     title: 'Unified Governance',
-    body: 'One dashboard for the whole organisation. Register your model providers once, then decide which teams reach which models. Change a policy in one place and it applies everywhere — no per-machine rollout, no shadow configurations to chase.',
+    body: 'Register your providers once, then set which teams reach which models. Change a policy in one place and it applies everywhere.',
   },
   {
     icon: Server,
     title: 'Runs Inside Your Infrastructure',
-    body: 'TorkQ deploys on your own server as a single node. Your provider keys stay encrypted on your hardware and your prompts never transit a third-party service. Sensitive data does not leave your infrastructure, because there is nowhere else for it to go.',
+    body: 'A single node on your own server. Provider keys stay encrypted on your hardware, and prompts never transit a third party.',
   },
   {
     icon: ShieldCheck,
     title: 'Evidence, Not Just Logs',
-    body: 'Every governed request writes a hash-chained record. Any change to an earlier entry breaks the chain and is detectable. When an auditor asks what happened to a specific piece of data, you produce a verifiable record instead of a filtered log export.',
+    body: 'Every request writes a hash-chained record. Alter an earlier entry and the chain breaks. Auditors get proof, not a log export.',
   },
   {
     icon: Plug,
     title: 'Connects to What You Already Use',
-    body: 'Your team gets a chat interface for everyday work and API keys for IDEs and internal tools. Point them at TorkQ instead of the provider and governance applies automatically — no browser extension, no agent on every laptop, no change to how people work.',
+    body: 'Chat for everyday work, API keys for IDEs and scripts. Point them at Torkq instead of the provider — no extensions, no agents.',
   },
 ];
 
@@ -70,9 +79,9 @@ export const DetailsSection: React.FC = () => {
 
             <Reveal delay={0.12}>
               <p className="text-base text-zinc-400 leading-body max-w-lg">
-                Your teams already use AI. TorkQ puts a control point between them and the model
-                — so sensitive data is masked before it leaves, access is decided by policy, and
-                every action leaves proof you can hand to an auditor.
+                Your teams already use AI. Torkq puts a control point between them and the
+                model: data masked before it leaves, access set by policy, every action
+                provable.
               </p>
             </Reveal>
 
